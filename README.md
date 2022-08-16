@@ -8,7 +8,6 @@ No Description.
 * [Technologies](#technologies)
   * [General](#general)
   * [Composer Packages](#composer-packages)
-<!-- * [NPM Packages](#npm-packages) -->
 * [Tools](#tools)
 * [Project Setup](#project-setup)
   * [Back-End](#back-end)
