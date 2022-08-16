@@ -42,6 +42,7 @@ class Hotel extends Model
     protected $fillable = 
     [
         'name',
+        'address',
         'created_at',
         'updated_at',
     ];
@@ -64,7 +65,6 @@ class Hotel extends Model
     protected $casts = [
         'created_at'        => 'datetime:Y-m-d H:i:s',
         'updated_at'        => 'datetime:Y-m-d H:i:s',
-        'deleted_at'        => 'datetime:Y-m-d H:i:s',
     ];
 
     /**
@@ -108,20 +108,5 @@ class Hotel extends Model
 
     //** belongsTo, belongsToMany, hasOne, hasMany relationships */
 
-    /*
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'created_by_user_id', 'id');
-    }
-
-    public function editor()
-    {
-        return $this->belongsTo(User::class, 'updated_by_user_id', 'id');
-    }
-
-    public function rooms()
-    {
-        return $this->hasMany(Room::class, 'examination_id', 'id');
-    }
-    */ 
+    //...
 }

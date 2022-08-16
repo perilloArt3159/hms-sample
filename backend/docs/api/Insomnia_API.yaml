@@ -1,0 +1,219 @@
+_type: export
+__export_format: 4
+__export_date: 2022-08-16T13:08:31.336Z
+__export_source: insomnia.desktop.app:v2022.4.2
+resources:
+  - _id: req_1f1f33db36064df7b8ec6912096ae909
+    parentId: fld_8e04b275b31e475b951d287a1ce6b9fe
+    modified: 1660655207219
+    created: 1660644064925
+    url: "{{ _.url.base }}/hotels"
+    name: List
+    description: ""
+    method: GET
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"search"        : null,
+          "sizePerPage"   : null,
+          "showPage"      : null,
+          "sortByColumn"  : null,
+          "sortDirection" : null
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_b35fe5bbfcaf44b2849bb034aab7659c
+    authentication: {}
+    metaSortKey: -1660644064925
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_8e04b275b31e475b951d287a1ce6b9fe
+    parentId: wrk_a8ac6388bb714a3ebb3fade6dd94ca33
+    modified: 1660644061324
+    created: 1660644061324
+    name: Hotels
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1660644061324
+    _type: request_group
+  - _id: wrk_a8ac6388bb714a3ebb3fade6dd94ca33
+    parentId: null
+    modified: 1660644008757
+    created: 1660644008757
+    name: hms-sample
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_e0b3af931ff44f0d97f70851a704508e
+    parentId: fld_8e04b275b31e475b951d287a1ce6b9fe
+    modified: 1660655169692
+    created: 1660644164257
+    url: "{{ _.url.base }}/hotels/create"
+    name: Create
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name"  : "Sofitel Philippine Plaza Manila", 
+        	"address" : "Roxas Boulevard, CCP Complex, Manila, PH 1300"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_8f7dd6f0ca504829a42a1ae5f23c98cd
+    authentication: {}
+    metaSortKey: -1660644064875
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_1c406a63560440d68fa58b4ed846a13f
+    parentId: fld_8e04b275b31e475b951d287a1ce6b9fe
+    modified: 1660646982822
+    created: 1660645194113
+    url: "{{ _.url.base }}/hotels/clark-marriott-hotel/show"
+    name: Read
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1660644064825
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_34909da175554aff9dbd6104b730ca1d
+    parentId: fld_8e04b275b31e475b951d287a1ce6b9fe
+    modified: 1660655161864
+    created: 1660646945747
+    url: "{{ _.url.base }}/hotels/clark-marriott-hotel/update"
+    name: Update
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: >-
+        {
+        	"name"    : "New World Makati Hotel", 
+        	"address" : "Esperanza Street corner Makati Avenue, Ayala Center, Makati, PH 1228"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_bc57eb753a044d3fb60912d9583318dd
+    authentication: {}
+    metaSortKey: -1660644064800
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_bce61998cc7840c7bda24ad2c4005c69
+    parentId: fld_8e04b275b31e475b951d287a1ce6b9fe
+    modified: 1660655204575
+    created: 1660646452661
+    url: "{{ _.url.base }}/hotels/clark-marriott-hotel/destroy"
+    name: Delete
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1660644064775
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_ec931ac3a0c9b12aaf91be2a87d9c7001d691fe1
+    parentId: wrk_a8ac6388bb714a3ebb3fade6dd94ca33
+    modified: 1660644277132
+    created: 1660644008765
+    name: Base Environment
+    data:
+      url:
+        base: http://127.0.0.1:8000/api
+      bearerToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzbHVnIjoiZXhhbXBsZSIsImlhdCI6MTY1NjA1MjgwNywiZXhwIjoxNjU2MDU2NDA3fQ.4Jszc3e9DAHOp8l0QfnhQZeHPLsQiZpJTh5MPDDu9IQ
+      refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzbHVnIjoiZXhhbXBsZSIsImlhdCI6MTY1NjAwMTc5NCwiZXhwIjoxNjU2MjYwOTk0fQ.Jtt6ryYfpaVy6yIt7p12kso4Osv675HfIkFcQxe6Gu4
+    dataPropertyOrder:
+      "&":
+        - url
+        - bearerToken
+        - refreshToken
+      "&~|url":
+        - base
+    color: null
+    isPrivate: false
+    metaSortKey: 1660644008765
+    _type: environment
+  - _id: jar_ec931ac3a0c9b12aaf91be2a87d9c7001d691fe1
+    parentId: wrk_a8ac6388bb714a3ebb3fade6dd94ca33
+    modified: 1660646224792
+    created: 1660644008766
+    name: Default Jar
+    cookies:
+      - key: XSRF-TOKEN
+        value: eyJpdiI6IllDS0loR3NXRW5ubVMzK0RpaU9Zb1E9PSIsInZhbHVlIjoiQy8xRnFNWFlVaGdkQVBtU1hTQUV3ZzBWUGFBTDlNMkpIUVVsK2J5MXJhd2R2aGszRGhLVHZHalBEN3BCN0dyTTFXNDlVRTNuNHlFNFZBMVFINy9Nc1dIeVA4dG9tOG5BS3Jyam5zWDI4Y2RoSmNiRGJDRjAyVnEyYXpmcmdqZVkiLCJtYWMiOiJlMmIzNTVkNDU1MjM1NWI0ZmI2MGI2ZjhlZDcwMzc0ZmZiYzExNDEwY2I3OTJkNzQxMWMzMzRlNDUxYTQ3NDIyIiwidGFnIjoiIn0%3D
+        expires: 2022-08-16T12:37:04.000Z
+        maxAge: 7200
+        domain: 127.0.0.1
+        path: /
+        extensions:
+          - samesite=lax
+        hostOnly: true
+        creation: 2022-08-16T10:35:56.188Z
+        lastAccessed: 2022-08-16T10:37:04.792Z
+        id: "008005261135747066"
+      - key: hms_sample_session
+        value: eyJpdiI6IlRWQVF3Tk9NMHNLNnZOaHFmc3ZwaHc9PSIsInZhbHVlIjoiaTZ3UEo0WGxrVTJHNzBpcWFlZStwazJhWWlpVHlwb0JoRjAzbG9xaWc0Wi9wSnlmeVJLZEtCbXV1NCtXVHF6anB3T2tRZ3R6UHhHZzVncHpNTGV1T1hOZHI5allTemxlRDQrK2MyTGF4QWc1dGZYcVQ1SHIrN0dkcFNaQTJ4S2ciLCJtYWMiOiIxYTJmNGI5YTYwMTkzYTRlM2I0MjUwNjQ3M2UzODZjYzA0ZTgxODgzNTRmOWJkMzdjNjJkNGU4MmYzNDM3NTc5IiwidGFnIjoiIn0%3D
+        expires: 2022-08-16T12:37:04.000Z
+        maxAge: 7200
+        domain: 127.0.0.1
+        path: /
+        httpOnly: true
+        extensions:
+          - samesite=lax
+        hostOnly: true
+        creation: 2022-08-16T10:35:56.189Z
+        lastAccessed: 2022-08-16T10:37:04.792Z
+        id: "6118741572886881"
+    _type: cookie_jar
+  - _id: spc_cbb8a31047364383a46808f8e940b21c
+    parentId: wrk_a8ac6388bb714a3ebb3fade6dd94ca33
+    modified: 1660644008759
+    created: 1660644008759
+    fileName: hms-sample
+    contents: ""
+    contentType: yaml
+    _type: api_spec
