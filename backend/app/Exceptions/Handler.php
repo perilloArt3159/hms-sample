@@ -52,7 +52,7 @@ class Handler extends ExceptionHandler
             if ($request->is('api/*'))
             {
                 return response()->json([
-                    'message' => 'Route not found.',
+                    'message' => 'Record not found.',
                     'data'    => null, 
                 ], 404);
             }
