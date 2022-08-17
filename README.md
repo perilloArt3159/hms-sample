@@ -28,12 +28,23 @@ No Description.
 |:----|:-----|:------------------|
 | [Laravel](https://laravel.com/docs/9.x)     |`9.24.0`        |PHP Back-End Framework           |
 | [MySQL](https://www.mysql.com/)             |`8.0.0`         |Relational Database Management System        |
+| [BootstrapVue](https://www.mysql.com/)      |`2.21.2`        |Bootstrap UI Library for Vue.js       |
+| [Nuxt.js](https://nuxtjs.org/)              |`2.15.8`        |Vue.js Open-Source Framework   |
 
 ### Composer Packages
 
 |Name                                                                                                           |Version          |Description                                         |
 |:---------------------------------------------------------------------------------------------                |:---------------:|:-------------------------------------------:       |
 |[cviebrock/eloquent-sluggable](https://github.com/cviebrock/eloquent-sluggable)                                |`9.0.0`          |Generate Slugs for Eloquent Models                  |
+
+
+### NPM Packages
+
+|Name                                                                                                           |Version          |Description                                    |
+|:--------------------------------------------------------------------------------:                             |:---------------:|:-------------------------------------------:  |
+|[SASS](https://sass-lang.com/)                                                                                 |`1.54.4`         |CSS Preprocessor                               |
+|[Bootstrap Icons](https://icons.getbootstrap.com)                                                              |`1.9.1`          |Open-source Icon Library                       |
+
 
 ## Tools
 
@@ -46,7 +57,7 @@ No Description.
 
 ### Back-End
 
-* From the backend directory, install all the composer and npm package dependencies by running the following commands.
+* From the backend directory, install all the Composer Package Dependencies.
 
 ```bash
 # Install Composer Package Dependencies
@@ -91,7 +102,7 @@ $ php artisan migrate:fresh
 $ php artisan db:seed
 ```
 
-* Start the Server
+* Start the Back-End Server.
 
 ```bash
 # Command to Run the Server
@@ -102,7 +113,19 @@ $ php artisan serve
 
 ### Front-End
 
-To be Added
+* From the Front-Directory, install all the composer and npm package dependencies by running the following commands.
+
+```bash
+# Install NPM Package Dependencies
+$ npm install 
+```
+
+* Start the Front-End Server.
+
+```bash
+# Command to Run the Server
+$ npm run dev
+```
 
 ## License
 
