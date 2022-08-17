@@ -1,12 +1,17 @@
 <template>
-    <div>
+    <div id="content">
         <app-sidebar/>
         <div id="main">
             <app-header/>
             <main>
-                <b-container>
-                    <Nuxt />
-                </b-container>
+                <transition name="home">
+                    <b-container 
+                        class="my-3"
+                        fluid
+                    >
+                        <Nuxt />
+                    </b-container>
+                </transition>
             </main>
             <app-footer/>
         </div>
@@ -45,6 +50,19 @@
         left: 240px;
     }
 }
+
+.home-enter-active,
+.home-leave-active 
+{
+    transition: opacity .5s;
+}
+
+.home-enter,
+.home-leave-active 
+{
+    opacity: 0;
+}
+
 </style>
 
 <script lang="ts">

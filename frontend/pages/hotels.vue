@@ -1,21 +1,27 @@
 <template>
     <div>
-        <h3 class="fw-bold text-secondary">
-            Customers
+        <h3 class="font-weight-bold text-secondary">
+            Hotels
         </h3>
-    
+
         <hr class="hr" />
+
+        <b-row>
+            <b-col class="text-muted">
+                <small class="text-muted">
+                    To Be Added
+                </small>
+            </b-col>
+        </b-row>
     </div>
 </template>
 
-<script lang="ts">
+<script>
 
-import Vue from 'vue'
+export default
+{
+    name  : 'HotelsPage',
+    layout: "dashboard",
+}
 
-export default Vue.extend(
-    {
-        name: 'HotelsPage',
-        layout: "dashboard",
-    }
-)
 </script>

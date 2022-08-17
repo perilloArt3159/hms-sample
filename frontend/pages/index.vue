@@ -1,21 +1,27 @@
 <template>
 	<div>
-		<h3 class="fw-bold text-secondary">
+		<h3 class="font-weight-bold text-secondary">
 			Home
 		</h3>
 
 		<hr class="hr" />
+
+		<b-row>
+			<b-col class="text-muted">
+				<small class="text-muted">
+					To Be Added
+				</small>
+			</b-col>
+		</b-row>
 	</div>
 </template>
 
-<script lang="ts">
+<script>
 
-import Vue from 'vue'
+export default
+{
+    name  : 'IndexPage',
+    layout: "dashboard",
+}
 
-export default Vue.extend(
-	{
-		name  : 'IndexPage',
-		layout: "dashboard",
-	}
-)
 </script>

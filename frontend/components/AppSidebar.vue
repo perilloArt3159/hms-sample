@@ -113,6 +113,17 @@
             background-color: #2BACF8;
         }
     }
+
+    a.nuxt-link-active 
+    {
+        font-weight: bold;
+    }
+
+    /* exact link will show the primary color for only the exact matching link */
+    a.nuxt-link-exact-active 
+    {
+        background-color: #ffffff20;
+    }
 }
 
 </style>
