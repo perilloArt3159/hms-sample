@@ -1,0 +1,15 @@
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+body 
+{
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #ffffff 0%, #ccffff 100%);
+}
+
+.cursor 
+{
+    &-pointer 
+    {
+        cursor: pointer;
+    }
+}
