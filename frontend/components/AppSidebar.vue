@@ -50,7 +50,7 @@
                         v-for="link in links" 
                         :key="link.name"
                     >
-                        <i :class="[link.icon, 'h4']">
+                        <i :class="[link.icon, 'h4', 'mb-0']">
 
                         </i>
                         <span>
@@ -85,7 +85,8 @@
 
         .sidebar-item span 
         {
-            display : block; 
+            opacity  : 1;
+            height: 100%;
         }
     }
 
@@ -101,15 +102,19 @@
 
         span 
         {
-            display    : none;
+            height     : 0;
+            opacity    : 0;
             margin-left: 10px;
+            transition : all 0.2s linear;
         }
 
-        &:hover {
+        &:hover 
+        {
             background-color: #00000020;
         }
 
-        &.active {
+        &.active 
+        {
             background-color: #2BACF8;
         }
     }
@@ -147,7 +152,7 @@ export default
                 }, 
                 {
                     name     : 'about-us',
-                    icon     : 'bi bi-info',
+                    icon     : 'bi bi-info-circle',
                     to       : '/about-us',
                     title    : 'About Us',
                     component: 'about-us'
