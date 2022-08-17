@@ -8,6 +8,7 @@ No Description.
 * [Technologies](#technologies)
   * [General](#general)
   * [Composer Packages](#composer-packages)
+  * [NPM Packages](#npm-packages)
 * [Tools](#tools)
 * [Project Setup](#project-setup)
   * [Back-End](#back-end)
@@ -113,7 +114,7 @@ $ php artisan serve
 
 ### Front-End
 
-* From the Front-Directory, install all the composer and npm package dependencies by running the following commands.
+* From the Front-Directory, install all the NPM Package dDpendencies by running the following command.
 
 ```bash
 # Install NPM Package Dependencies
