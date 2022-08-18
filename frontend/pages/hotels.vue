@@ -74,7 +74,7 @@
                         @ok="handleModalUpdateOk"
                     >
                         <form ref="formUpdate" @submit.stop.prevent="handleFormUpdateSubmit">
-                            <b-form-group l
+                            <b-form-group 
                                 label="Name" 
                                 label-for="name-input" 
                                 invalid-feedback="Name is required"
@@ -112,82 +112,124 @@
                 </div>
 
                 <!-- User Interface controls -->
-                <b-row>
+                <b-row class="my-4">
                     <b-col lg="6" class="my-1">
-                        <b-form-group label="Sort" label-for="sort-by-select" label-cols-sm="3" label-align-sm="right"
-                            label-size="sm" class="mb-0" v-slot="{ ariaDescribedby }">
+                        <b-form-group 
+                            label="Sort" 
+                            label-for="sort-by-select" 
+                            label-cols-sm="2" 
+                            label-align-sm="center"
+                            label-class="font-weight-bold"
+                            label-size="sm" 
+                            class="mb-0" 
+                            v-slot="{ ariaDescribedby }"
+                        >
                             <b-input-group size="sm">
-                                <b-form-select id="sort-by-select" v-model="sortBy" :options="sortOptions"
-                                    :aria-describedby="ariaDescribedby" class="w-75">
+                                <b-form-select 
+                                    id="sort-by-select" 
+                                    v-model="sortBy" 
+                                    class="w-75"
+                                    :options="sortOptions"
+                                    :aria-describedby="ariaDescribedby" 
+                                    @change="onPageChange"
+                                >
                                     <template #first>
                                         <option value="">-- none --</option>
                                     </template>
                                 </b-form-select>
 
-                                <b-form-select v-model="sortDesc" :disabled="!sortBy"
-                                    :aria-describedby="ariaDescribedby" size="sm" class="w-25">
+                                <b-form-select 
+                                    v-model="sortDesc" 
+                                    size="sm" 
+                                    class="w-25"
+                                    :disabled="!sortBy"
+                                    :aria-describedby="ariaDescribedby" 
+                                    @change="onPageChange"
+                                >
                                     <option :value="false">Asc</option>
                                     <option :value="true">Desc</option>
                                 </b-form-select>
                             </b-input-group>
                         </b-form-group>
-                    </b-col>
+                    </b-col>              
 
-                    <b-col lg="6" class="my-1">
-                        <b-form-group label="Initial sort" label-for="initial-sort-select" label-cols-sm="3"
-                            label-align-sm="right" label-size="sm" class="mb-0">
-                            <b-form-select id="initial-sort-select" v-model="sortDirection"
-                                :options="['asc', 'desc', 'last']" size="sm"></b-form-select>
+                    <b-col md="6" class="my-1">
+                        <b-form-group 
+                            label="Show" 
+                            label-for="per-page-select" 
+                            label-cols-sm="5" 
+                            label-cols-md="4"
+                            label-cols-lg="3" 
+                            label-class="font-weight-bold"
+                            label-align-sm="center" 
+                            label-size="sm" 
+                            class="mb-0"
+                        >
+                            <b-form-select 
+                                id="per-page-select" 
+                                v-model="paginationInfo.perPage" 
+                                size="sm"
+                                :options="pageOptions" 
+                                @change="onPageChange"
+                            >
+                            </b-form-select>
                         </b-form-group>
                     </b-col>
 
                     <b-col lg="6" class="my-1">
-                        <b-form-group label="Filter" label-for="filter-input" label-cols-sm="3" label-align-sm="right"
-                            label-size="sm" class="mb-0">
+                        <b-form-group 
+                            label="Filter" 
+                            label-for="filter-input" 
+                            label-cols-sm="2"
+                            label-class="font-weight-bold"
+                            label-align-sm="center"
+                            label-size="sm" 
+                            class="mb-0"
+                        >
                             <b-input-group size="sm">
-                                <b-form-input id="filter-input" v-model="filter" type="search"
-                                    placeholder="Type to Search">
+                                <b-form-input 
+                                    id="filter-input" 
+                                    v-model="filter" 
+                                    type="search"
+                                    placeholder="Type to Search"
+                                >
                                 </b-form-input>
 
                                 <b-input-group-append>
-                                    <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                                    <b-button :disabled="!filter" @click="filter = null">Clear</b-button>
                                 </b-input-group-append>
                             </b-input-group>
                         </b-form-group>
                     </b-col>
 
-                    <b-col lg="6" class="my-1">
-                        <b-form-group v-model="sortDirection" label="Filter On"
-                            description="Leave all unchecked to filter on all data" label-cols-sm="3"
-                            label-align-sm="right" label-size="sm" class="mb-0" v-slot="{ ariaDescribedby }">
-                            <b-form-checkbox-group v-model="filterOn" :aria-describedby="ariaDescribedby" class="mt-1">
-                                <b-form-checkbox value="name">Name</b-form-checkbox>
-                                <b-form-checkbox value="age">Age</b-form-checkbox>
-                                <b-form-checkbox value="isActive">Active</b-form-checkbox>
-                            </b-form-checkbox-group>
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col sm="5" md="6" class="my-1">
-                        <b-form-group label="Per page" label-for="per-page-select" label-cols-sm="6" label-cols-md="4"
-                            label-cols-lg="3" label-align-sm="right" label-size="sm" class="mb-0">
-                            <b-form-select id="per-page-select" v-model="items.data.pagination.size" :options="pageOptions" size="sm">
-                            </b-form-select>
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col sm="7" md="6" class="my-1">
-                        <b-pagination v-model="items.data.pagination.current" :total-rows="items.data.pagination.total"
-                            :per-page="items.data.pagination.size" align="fill" size="sm" class="my-0">
+                    <b-col sm="7" md="6"  class="my-1">
+                        <b-pagination 
+                            v-model="paginationInfo.currentPage" 
+                            class="my-0"
+                            align="fill" 
+                            size="sm" 
+                            :total-rows="items.data.pagination.total"
+                            :per-page="items.data.pagination.size" 
+                            @change="onPageChange"
+                        >
                         </b-pagination>
                     </b-col>
                 </b-row>
 
                 <!-- Main table element -->
-                <b-table :items="items.data.items" :fields="fields" :current-page="items.data.pagination.current"
-                    :per-page="items.data.pagination.size" :filter="filter" :filter-included-fields="filterOn"
-                    :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection" stacked="md"
-                    show-empty @filtered="onFiltered">
+                <b-table 
+                    :items="items.data.items" 
+                    :fields="fields" 
+                    :current-page="paginationInfo.currentPage"
+                    :per-page="paginationInfo.size" 
+                    :filter="filter" 
+                    :sort-by.sync="sortBy" 
+                    :sort-desc.sync="sortDesc" 
+                    :sort-direction="sortDirection" 
+                    stacked="md"
+                    show-empty 
+                    @filtered="onFiltered"
+                >
 
                     <!-- BUSY STATE -->
                     <template #table-busy>
@@ -275,7 +317,7 @@ export default
                 .filter(f => f.sortable)
                 .map(f => 
                 {
-                    return { text: f.label, value: f.key }
+                    return { text: f.label, value: f.column }
                 })
         }
     },
@@ -314,18 +356,21 @@ export default
             [
                 '#',
                 {
-                    key          : "name",
-                    label        : 'Name',
-                    sortable     : true,
+                    key     : "name",
+                    label   : 'Name',
+                    column  : 'name',
+                    sortable: true,
                 },
                 {
                     key     : 'address',
                     label   : 'Address',
+                    column  : 'address',
                     sortable: true,
                 },
                 {
                     key     : 'createdAt',
                     label   : 'Created At',
+                    column  : 'created_at',
                     sortable: true,
                 },
                 {
@@ -333,12 +378,34 @@ export default
                     label: 'Actions'
                 }
             ],
-            pageOptions  : [10, 25, 50, { value: 100, text: "Show a lot" }],
+            pageOptions:
+            [
+                {
+                    value : 10, 
+                    text  : "10 Items"
+                }, 
+                {
+                    value: 25, 
+                    text : "25 Items"    
+                },
+                {
+                    value: 50,
+                    text: "50 Items" 
+                },
+                { 
+                    value: 100,
+                    text: "100 Items" 
+                }
+            ],
             sortBy       : '',
             sortDesc     : false,
             sortDirection: 'asc',
             filter       : null,
-            filterOn     : [],
+            paginationInfo : 
+            {
+                perPage    : null,
+                currentPage: null,
+            }
         }
     ), 
     methods:
@@ -352,6 +419,24 @@ export default
                 'deleteHotel'
             ]
         ),
+        onPageChange: debounce(
+            async function () 
+            {
+                const requestData = 
+                {
+                    'search'       : this.filter,
+                    'sizePerPage'  : this.paginationInfo.perPage,
+                    'showPage'     : this.paginationInfo.currentPage,
+                    'sortByColumn' : this.sortBy, 
+                    'sortDirection': this.sortDirection 
+                }
+
+                await this.fetchHotels(
+                    requestData
+                ); 
+            },
+            250
+        ),
         setupFormUpdate(row) 
         {
             this.selectedSlug = row.slug; 
@@ -363,7 +448,7 @@ export default
             async function (slug) 
             {
                 await this.deleteHotel(slug);
-                await this.fetchHotels({ requestData: null }); 
+                this.onPageChange();
 
                 this.$bvToast.toast(
                     `Record Deleted`,
@@ -418,7 +503,8 @@ export default
                 }
 
                 await this.createHotel(this.formCreate.data); 
-                await this.fetchHotels({ requestData: null }); 
+
+                this.onPageChange(); 
 
                 this.$bvToast.toast(
                     `Record Created`,
@@ -474,7 +560,7 @@ export default
                 }
 
                 await this.updateHotel({requestData : this.formUpdate.data, slug : this.selectedSlug });
-                await this.fetchHotels({ requestData: null });
+                this.onPageChange(); 
 
                 this.$bvToast.toast(
                     `Record Updated`,
@@ -499,6 +585,16 @@ export default
     mounted: async function () 
     {
         await this.fetchHotels({ requestData: null });
+
+        this.paginationInfo.currentPage = this.items.data.pagination.current;
+        this.paginationInfo.perPage     = this.items.data.pagination.size;
+    }, 
+    watch:
+    {
+        filter: function (newValue, oldValue)
+        {
+            this.onPageChange();
+        }
     }
 };
 

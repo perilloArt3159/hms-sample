@@ -25,7 +25,7 @@ class HotelSeeder extends Seeder
         ); 
 
         //! Randomly Generated 
-        Hotel::factory(50)
+        Hotel::factory(150)
             ->create(); 
     }
 }
