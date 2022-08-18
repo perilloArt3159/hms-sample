@@ -51,7 +51,7 @@ export const actions =
 
         return hotel;
     },
-    async updateHotel({ commit, dispatch }, requestData, slug) 
+    async updateHotel({ commit, dispatch }, { requestData, slug }) 
     {
         await this.$axios.put(
             `${endpoint}/${slug}/update`, 

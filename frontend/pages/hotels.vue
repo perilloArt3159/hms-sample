@@ -18,24 +18,96 @@
                         </span>
                     </b-button>
 
-                    <b-modal id="modal-create" title="Add Hotel" @show="resetModalCreate" @hidden="resetModalCreate"
-                        @ok="handleModalCreateOk">
-                        <form ref="formCreate" @submit.stop.prevent="handleFormCreateSubmit">
-                            <b-form-group label="Name" label-for="name-input" invalid-feedback="Name is required"
-                                :state="formCreateState.name">
-                                <b-form-input id="name-input" v-model="formCreateData.name" placeholder="Enter Name"
-                                    required :state="formCreateState.name">
+                    <!-- MODAL CREATE -->
+                    <b-modal 
+                        id="modal-create" 
+                        title="Add Hotel" 
+                        @show="resetModalCreate" 
+                        @hidden="resetModalCreate"
+                        @ok="handleModalCreateOk"
+                    >
+                        <form 
+                            ref="formCreate" 
+                            @submit.stop.prevent="handleFormCreateSubmit"
+                        >
+                            <b-form-group 
+                                label="Name" 
+                                label-for="name-input" 
+                                invalid-feedback="Name is required"
+                                :state="formCreate.state.name"
+                            >
+                                <b-form-input 
+                                    id="name-input" 
+                                    v-model="formCreate.data.name" 
+                                    placeholder="Enter Name"
+                                    required 
+                                    :state="formCreate.state.name"
+                                >
                                 </b-form-input>
                             </b-form-group>
-                            <b-form-group label="Address" label-for="address-input"
-                                invalid-feedback="Address is required" :state="formCreateState.address">
-                                <b-form-textarea id="address-input" v-model="formCreateData.address" rows="3"
-                                    placeholder="Enter Address..." required :state="formCreateState.address">
-
+                            <b-form-group 
+                                label="Address" 
+                                label-for="address-input"
+                                invalid-feedback="Address is required" 
+                                :state="formCreate.state.address"
+                            >
+                                <b-form-textarea 
+                                    id="address-input" 
+                                    v-model="formCreate.data.address" 
+                                    rows="3"
+                                    placeholder="Enter Address..." 
+                                    required 
+                                    :state="formCreate.state.address"
+                                >
                                 </b-form-textarea>
                             </b-form-group>
                         </form>
                     </b-modal>
+                    <!-- END MODAL CREATE -->
+
+
+                    <!-- MODAL UPDATE -->
+                    <b-modal 
+                        id="modal-update" 
+                        title="Update Hotel" 
+                        @hidden="resetModalUpdate"
+                        @ok="handleModalUpdateOk"
+                    >
+                        <form ref="formUpdate" @submit.stop.prevent="handleFormUpdateSubmit">
+                            <b-form-group l
+                                label="Name" 
+                                label-for="name-input" 
+                                invalid-feedback="Name is required"
+                                :state="formUpdate.state.name"
+                            >
+                                <b-form-input 
+                                    id="name-input" 
+                                    v-model="formUpdate.data.name" 
+                                    placeholder="Enter Name"
+                                    required 
+                                    :state="formUpdate.state.name"
+                                >
+                                </b-form-input>
+                            </b-form-group>
+                            <b-form-group 
+                                label="Address" 
+                                label-for="address-input"
+                                invalid-feedback="Address is required" 
+                                :state="formUpdate.state.address"
+                            >
+                                <b-form-textarea 
+                                    id="address-input" 
+                                    v-model="formUpdate.data.address" 
+                                    rows="3"
+                                    placeholder="Enter Address..." 
+                                    required 
+                                    :state="formUpdate.state.address"
+                                >
+                                </b-form-textarea>
+                            </b-form-group>
+                        </form>
+                    </b-modal>
+                    <!-- END MODAL UPDATE -->
 
                 </div>
 
@@ -99,14 +171,14 @@
                     <b-col sm="5" md="6" class="my-1">
                         <b-form-group label="Per page" label-for="per-page-select" label-cols-sm="6" label-cols-md="4"
                             label-cols-lg="3" label-align-sm="right" label-size="sm" class="mb-0">
-                            <b-form-select id="per-page-select" v-model="perPage" :options="pageOptions" size="sm">
+                            <b-form-select id="per-page-select" v-model="items.data.pagination.size" :options="pageOptions" size="sm">
                             </b-form-select>
                         </b-form-group>
                     </b-col>
 
                     <b-col sm="7" md="6" class="my-1">
-                        <b-pagination v-model="currentPage" :total-rows="items.data.pagination.total"
-                            :per-page="perPage" align="fill" size="sm" class="my-0">
+                        <b-pagination v-model="items.data.pagination.current" :total-rows="items.data.pagination.total"
+                            :per-page="items.data.pagination.size" align="fill" size="sm" class="my-0">
                         </b-pagination>
                     </b-col>
                 </b-row>
@@ -116,6 +188,7 @@
                     :per-page="items.data.pagination.size" :filter="filter" :filter-included-fields="filterOn"
                     :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection" stacked="md"
                     show-empty @filtered="onFiltered">
+
                     <!-- BUSY STATE -->
                     <template #table-busy>
                         <div class="text-center text-danger my-2">
@@ -135,7 +208,13 @@
                     </template>
 
                     <template #cell(actions)="row">
-                        <b-button size="sm" class="mr-1" variant="info" @click="updateItem(row.item)">
+                        <b-button 
+                            size="sm" 
+                            class="mr-1" 
+                            variant="info" 
+                            @click="setupFormUpdate(row.item)" 
+                            v-b-modal.modal-update
+                        >
                             <i class="bi bi-pen-fill fs-6"></i>
                         </b-button>
                         <b-button size="sm" variant="danger" @click="deleteItem(row.item.slug)">
@@ -154,11 +233,6 @@
                     </template>
                 </b-table>
 
-                <!-- Info modal -->
-                <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
-                    <pre>{{ infoModal.content }}</pre>
-                </b-modal>
-
             </b-container>
         </template>
 
@@ -168,6 +242,8 @@
                 </b-spinner>
             </div>
         </template>
+
+
     </div>
 </template>
 
@@ -203,19 +279,36 @@ export default
                 })
         }
     },
-    data    : () => (
+    data  : () => (
         {
             modalCreateActive: false, 
             modalUpdateActive: false, 
-            formCreateData: 
+            selectedSlug     : null, 
+            formCreate: 
             {
-                name   : null,
-                address: null,
+                data :
+                {
+                    name   : null,
+                    address: null,
+                },
+                state : 
+                {
+                    name   : null,
+                    address: null,
+                }
             },  
-            formCreateState: 
+            formUpdate: 
             {
-                name    : null, 
-                address : null
+                data: 
+                {
+                    name    : null, 
+                    address : null
+                }, 
+                state: 
+                {
+                    name: null,
+                    address: null,
+                }
             },
             fields:
             [
@@ -240,21 +333,12 @@ export default
                     label: 'Actions'
                 }
             ],
-            totalRows    : 1,
-            currentPage  : 1,
-            perPage      : 5,
             pageOptions  : [10, 25, 50, { value: 100, text: "Show a lot" }],
             sortBy       : '',
             sortDesc     : false,
             sortDirection: 'asc',
             filter       : null,
             filterOn     : [],
-            infoModal:
-            {
-                id     : 'info-modal',
-                title  : '',
-                content: ''
-            }
         }
     ), 
     methods:
@@ -268,9 +352,12 @@ export default
                 'deleteHotel'
             ]
         ),
-        updateItem() 
+        setupFormUpdate(row) 
         {
-            
+            this.selectedSlug = row.slug; 
+
+            this.formUpdate.data.name    = row.name;
+            this.formUpdate.data.address = row.address;
         },
         deleteItem: debounce(
             async function (slug) 
@@ -290,11 +377,6 @@ export default
             },
             250 
         ),
-        resetInfoModal() 
-        {
-            this.infoModal.title = ''
-            this.infoModal.content = ''
-        },
         onFiltered(filteredItems) 
         {
             // Trigger pagination to update the number of buttons/pages due to filtering
@@ -305,17 +387,18 @@ export default
         {
             const valid = this.$refs.formCreate.checkValidity();
 
-            this.formCreateState.name    = this.formCreateData.name    == null || this.formCreateData.name   == '' ? false : true ;
-            this.formCreateState.address = this.formCreateData.address == null || this.formCreateData.address == '' ? false : true;
+            this.formCreate.state.name    = this.formCreate.data.name    == null || this.formCreate.data.name   == '' ? false : true ;
+            this.formCreate.state.address = this.formCreate.data.address == null || this.formCreate.data.address == '' ? false : true;
+
             return valid;
         },
         resetModalCreate()
         {
-            this.formCreateData.name    = null;
-            this.formCreateData.address = null;
+            this.formCreate.data.name    = null;
+            this.formCreate.data.address = null;
 
-            this.formCreateState.name    = null;
-            this.formCreateState.address = null;
+            this.formCreate.state.name    = null;
+            this.formCreate.state.address = null;
         },
         handleModalCreateOk(bvModalEvent)
         {
@@ -334,14 +417,14 @@ export default
                     return
                 }
 
-                await this.createHotel(this.formCreateData); 
+                await this.createHotel(this.formCreate.data); 
                 await this.fetchHotels({ requestData: null }); 
 
                 this.$bvToast.toast(
                     `Record Created`,
                     {
                         title        : 'Success',
-                        autoHideDelay: 5000,
+                        autoHideDelay: 1000,
                         appendToast  : true,
                         variant      : 'primary'
                     }
@@ -353,6 +436,62 @@ export default
                         this.$bvModal.hide('modal-create')
                     }
                 ); 
+            },
+            250
+        ), 
+        checkFormUpdateValidity()
+        {
+            const valid = this.$refs.formUpdate.checkValidity();
+
+            this.formUpdate.state.name = this.formUpdate.data.name == null || this.formUpdate.data.name          == '' ? false : true;
+            this.formUpdate.state.address = this.formUpdate.data.address == null || this.formUpdate.data.address == '' ? false : true;
+
+            return valid;
+        },
+        resetModalUpdate()
+        {
+            this.formUpdate.data.name = null;
+            this.formUpdate.data.address = null;
+
+            this.formUpdate.state.name = null;
+            this.formUpdate.state.address = null;
+        },
+        handleModalUpdateOk(bvModalEvent)
+        {
+            // Prevent modal from closing
+            bvModalEvent.preventDefault()
+
+            // Trigger submit handler
+            this.handleModalUpdateSubmit()
+        },
+        handleModalUpdateSubmit: debounce(
+            async function (e) 
+            {
+                //! Exit when the form isn't valid
+                if (!this.checkFormUpdateValidity())
+                {
+                    return
+                }
+
+                await this.updateHotel({requestData : this.formUpdate.data, slug : this.selectedSlug });
+                await this.fetchHotels({ requestData: null });
+
+                this.$bvToast.toast(
+                    `Record Updated`,
+                    {
+                        title        : 'Success',
+                        autoHideDelay: 2000,
+                        appendToast  : true,
+                        variant      : 'primary'
+                    }
+                );
+
+                //! Hide the modal manually
+                this.$nextTick(() =>
+                {
+                    this.$bvModal.hide('modal-update')
+                }
+                );
             },
             250
         )
