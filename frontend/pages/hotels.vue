@@ -6,120 +6,195 @@
 
         <hr class="hr" />
 
-        {{hotels}}
-        <b-container fluid>
-            <!-- User Interface controls -->
-            <b-row>
-                <b-col lg="6" class="my-1">
-                    <b-form-group label="Sort" label-for="sort-by-select" label-cols-sm="3" label-align-sm="right"
-                        label-size="sm" class="mb-0" v-slot="{ ariaDescribedby }">
-                        <b-input-group size="sm">
-                            <b-form-select id="sort-by-select" v-model="sortBy" :options="sortOptions"
-                                :aria-describedby="ariaDescribedby" class="w-75">
-                                <template #first>
-                                    <option value="">-- none --</option>
-                                </template>
-                            </b-form-select>
+        <template v-if="items!=null">
+            <b-container fluid>
+                
+                <div>
+                    <b-button 
+                        class="d-flex align-items-center"
+                        v-b-modal.modal-1
+                    >
+                        <i class="bi bi-plus-circle">
 
-                            <b-form-select v-model="sortDesc" :disabled="!sortBy" :aria-describedby="ariaDescribedby"
-                                size="sm" class="w-25">
-                                <option :value="false">Asc</option>
-                                <option :value="true">Desc</option>
-                            </b-form-select>
-                        </b-input-group>
-                    </b-form-group>
-                </b-col>
-
-                <b-col lg="6" class="my-1">
-                    <b-form-group label="Initial sort" label-for="initial-sort-select" label-cols-sm="3"
-                        label-align-sm="right" label-size="sm" class="mb-0">
-                        <b-form-select id="initial-sort-select" v-model="sortDirection"
-                            :options="['asc', 'desc', 'last']" size="sm"></b-form-select>
-                    </b-form-group>
-                </b-col>
-
-                <b-col lg="6" class="my-1">
-                    <b-form-group label="Filter" label-for="filter-input" label-cols-sm="3" label-align-sm="right"
-                        label-size="sm" class="mb-0">
-                        <b-input-group size="sm">
-                            <b-form-input id="filter-input" v-model="filter" type="search" placeholder="Type to Search">
-                            </b-form-input>
-
-                            <b-input-group-append>
-                                <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-                            </b-input-group-append>
-                        </b-input-group>
-                    </b-form-group>
-                </b-col>
-
-                <b-col lg="6" class="my-1">
-                    <b-form-group v-model="sortDirection" label="Filter On"
-                        description="Leave all unchecked to filter on all data" label-cols-sm="3" label-align-sm="right"
-                        label-size="sm" class="mb-0" v-slot="{ ariaDescribedby }">
-                        <b-form-checkbox-group v-model="filterOn" :aria-describedby="ariaDescribedby" class="mt-1">
-                            <b-form-checkbox value="name">Name</b-form-checkbox>
-                            <b-form-checkbox value="age">Age</b-form-checkbox>
-                            <b-form-checkbox value="isActive">Active</b-form-checkbox>
-                        </b-form-checkbox-group>
-                    </b-form-group>
-                </b-col>
-
-                <b-col sm="5" md="6" class="my-1">
-                    <b-form-group label="Per page" label-for="per-page-select" label-cols-sm="6" label-cols-md="4"
-                        label-cols-lg="3" label-align-sm="right" label-size="sm" class="mb-0">
-                        <b-form-select id="per-page-select" v-model="perPage" :options="pageOptions" size="sm">
-                        </b-form-select>
-                    </b-form-group>
-                </b-col>
-
-                <b-col sm="7" md="6" class="my-1">
-                    <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill"
-                        size="sm" class="my-0"></b-pagination>
-                </b-col>
-            </b-row>
-
-            <!-- Main table element -->
-            <b-table 
-                :items="items" 
-                :fields="fields" 
-                :current-page="currentPage" 
-                :per-page="perPage" 
-                :filter="filter"
-                :filter-included-fields="filterOn" 
-                :sort-by.sync="sortBy" 
-                :sort-desc.sync="sortDesc"
-                :sort-direction="sortDirection" 
-                stacked="md" 
-                show-empty small 
-                @filtered="onFiltered"
-            >
-                <template #cell(name)="row">
-                    {{ row.value.first }} {{ row.value.last }}
-                </template>
-
-                <template #cell(actions)="row">
-                    <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
-                        Info modal
+                        </i>
+                        <span class="ml-2">
+                            Create Hotel
+                        </span>
                     </b-button>
-                    <b-button size="sm" @click="row.toggleDetails">
-                        {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
-                    </b-button>
-                </template>
 
-                <template #row-details="row">
-                    <b-card>
-                        <ul>
-                            <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value }}</li>
-                        </ul>
-                    </b-card>
-                </template>
-            </b-table>
+                    <b-modal 
+                        id="modal-1"     
+                        title="Add Hotel"
+                        @show="resetModalCreate"
+                        @hidden="resetModalCreate"
+                        @ok="handleModalCreateOk"
+                    >
+                        <form ref="formCreate" 
+                            @submit.stop.prevent="handleFormCreateSubmit"
+                        >
+                            <b-form-group
+                                label="Name"
+                                label-for="name-input"
+                                invalid-feedback="Name is required"
+                                :state="formCreateState.name"
+                            >
+                                <b-form-input
+                                    id="name-input"
+                                    v-model="formCreateData.name"
+                                    placeholder="Enter Name"
+                                    required
+                                    :state="formCreateState.name"
+                                >
+                                </b-form-input>
+                            </b-form-group>
+                            <b-form-group
+                                label="Address"
+                                label-for="address-input"
+                                invalid-feedback="Address is required"
+                                :state="formCreateState.address"
+                            >
+                                <b-form-textarea
+                                    id="address-input"
+                                    v-model="formCreateData.address"
+                                    rows="3"
+                                    placeholder="Enter Address..."
+                                    required
+                                    :state="formCreateState.address"
+                                >
 
-            <!-- Info modal -->
-            <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
-                <pre>{{ infoModal.content }}</pre>
-            </b-modal>
-        </b-container>
+                                </b-form-textarea>
+                            </b-form-group>
+                        </form>
+                    </b-modal>
+
+                </div>
+
+                <!-- User Interface controls -->
+                <b-row>
+                    <b-col lg="6" class="my-1">
+                        <b-form-group label="Sort" label-for="sort-by-select" label-cols-sm="3" label-align-sm="right"
+                            label-size="sm" class="mb-0" v-slot="{ ariaDescribedby }">
+                            <b-input-group size="sm">
+                                <b-form-select id="sort-by-select" v-model="sortBy" :options="sortOptions"
+                                    :aria-describedby="ariaDescribedby" class="w-75">
+                                    <template #first>
+                                        <option value="">-- none --</option>
+                                    </template>
+                                </b-form-select>
+
+                                <b-form-select v-model="sortDesc" :disabled="!sortBy"
+                                    :aria-describedby="ariaDescribedby" size="sm" class="w-25">
+                                    <option :value="false">Asc</option>
+                                    <option :value="true">Desc</option>
+                                </b-form-select>
+                            </b-input-group>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col lg="6" class="my-1">
+                        <b-form-group label="Initial sort" label-for="initial-sort-select" label-cols-sm="3"
+                            label-align-sm="right" label-size="sm" class="mb-0">
+                            <b-form-select id="initial-sort-select" v-model="sortDirection"
+                                :options="['asc', 'desc', 'last']" size="sm"></b-form-select>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col lg="6" class="my-1">
+                        <b-form-group label="Filter" label-for="filter-input" label-cols-sm="3" label-align-sm="right"
+                            label-size="sm" class="mb-0">
+                            <b-input-group size="sm">
+                                <b-form-input id="filter-input" v-model="filter" type="search"
+                                    placeholder="Type to Search">
+                                </b-form-input>
+
+                                <b-input-group-append>
+                                    <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                                </b-input-group-append>
+                            </b-input-group>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col lg="6" class="my-1">
+                        <b-form-group v-model="sortDirection" label="Filter On"
+                            description="Leave all unchecked to filter on all data" label-cols-sm="3"
+                            label-align-sm="right" label-size="sm" class="mb-0" v-slot="{ ariaDescribedby }">
+                            <b-form-checkbox-group v-model="filterOn" :aria-describedby="ariaDescribedby" class="mt-1">
+                                <b-form-checkbox value="name">Name</b-form-checkbox>
+                                <b-form-checkbox value="age">Age</b-form-checkbox>
+                                <b-form-checkbox value="isActive">Active</b-form-checkbox>
+                            </b-form-checkbox-group>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col sm="5" md="6" class="my-1">
+                        <b-form-group label="Per page" label-for="per-page-select" label-cols-sm="6" label-cols-md="4"
+                            label-cols-lg="3" label-align-sm="right" label-size="sm" class="mb-0">
+                            <b-form-select id="per-page-select" v-model="perPage" :options="pageOptions" size="sm">
+                            </b-form-select>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col sm="7" md="6" class="my-1">
+                        <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill"
+                            size="sm" class="my-0">
+                        </b-pagination>
+                    </b-col>
+                </b-row>
+
+                <!-- Main table element -->
+                <b-table 
+                    :items="items.data.items" 
+                    :fields="fields" 
+                    :current-page="1" 
+                    :per-page="perPage"
+                    :filter="filter" 
+                    :filter-included-fields="filterOn" 
+                    :sort-by.sync="sortBy"
+                    :sort-desc.sync="sortDesc" 
+                    :sort-direction="sortDirection" 
+                    stacked="md" 
+                    show-empty 
+                    small
+                    @filtered="onFiltered"
+                >
+                    <template #cell(name)="row">
+                        {{ row.value.first }} {{ row.value.last }}
+                    </template>
+
+                    <template #cell(actions)="row">
+                        <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
+                            Info modal
+                        </b-button>
+                        <b-button size="sm" @click="row.toggleDetails">
+                            {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+                        </b-button>
+                    </template>
+
+                    <template #row-details="row">
+                        <b-card>
+                            <ul>
+                                <li v-for="(value, key) in row.item" :key="key">
+                                    {{ key }}: {{ value }}
+                                </li>
+                            </ul>
+                        </b-card>
+                    </template>
+                </b-table>
+
+                <!-- Info modal -->
+                <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
+                    <pre>{{ infoModal.content }}</pre>
+                </b-modal>
+
+            </b-container>
+        </template>
+
+        <template v-else>
+            <div class="text-center my-5 d-flex justify-content-center">
+                <b-spinner variant="primary" label="Spinning" style="width: 4rem; height: 4rem;">
+                </b-spinner>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -134,13 +209,16 @@ import
 }
 from 'vuex';
 
+import debounce from 'lodash'; 
+
 export default
 {
     name    : 'HotelsPage',
     layout  : "dashboard",
     computed:
     {
-        ...mapState(['hotels']),   
+        ...mapState( 'hotels', ['items']),   
+
         sortOptions() 
         {
             // Create an options list from our fields
@@ -154,69 +232,28 @@ export default
     },
     data    : () => (
         {
-            items:
-            [
-                {
-                    isActive: true, age: 40, name: { first: 'Dickerson', last: 'Macdonald' }
-                },
-                {
-                    isActive: false, age: 21, name: { first: 'Larsen', last: 'Shaw' }
-                },
-                {
-                    isActive: false,
-                    age: 9,
-                    name: { first: 'Mini', last: 'Navarro' },
-                    _rowVariant: 'success'
-                },
-                {
-                    isActive: false, age: 89, name: { first: 'Geneva', last: 'Wilson' }
-                },
-                {
-                    isActive: true, age: 38, name: { first: 'Jami', last: 'Carney' }
-                },
-                {
-                    isActive: false, age: 27, name: { first: 'Essie', last: 'Dunlap' }
-                },
-                {
-                    isActive: true, age: 40, name: { first: 'Thor', last: 'Macdonald' }
-                },
-                {
-                    isActive: true,
-                    age: 87,
-                    name: { first: 'Larsen', last: 'Shaw' },
-                    _cellVariants: { age: 'danger', isActive: 'warning' }
-                },
-                {
-                    isActive: false, age: 26, name: { first: 'Mitzi', last: 'Navarro' }
-                },
-                {
-                    isActive: false, age: 22, name: { first: 'Genevieve', last: 'Wilson' }
-                },
-                {
-                    isActive: true, age: 38, name: { first: 'John', last: 'Carney' }
-                },
-                {
-                    isActive: false, age: 29, name: { first: 'Dick', last: 'Dunlap' }
-                }
-            ],
+            modalCreateActive: false, 
+            modalUpdateActive: false, 
+            formCreateData: 
+            {
+                name   : null,
+                address: null,
+            },  
+            formCreateState: 
+            {
+                name    : null, 
+                address : null
+            },
             fields:
             [
                 {
-                    key: 'name', label: 'Person full name', sortable: true, sortDirection: 'desc'
+                    key: 'name', label: 'Title', sortable: true, sortDirection: 'desc'
                 },
                 {
-                    key: 'age', label: 'Person age', sortable: true, class: 'text-center'
+                    key: 'address', label: 'Address', sortable: true, class: 'text-center'
                 },
                 {
-                    key: 'isActive',
-                    label: 'Is Active',
-                    formatter: (value, key, item) =>
-                    {
-                        return value ? 'Yes' : 'No'
-                    },
-                    sortable: true,
-                    sortByFormatted: true,
-                    filterByFormatted: true
+                    key: 'createdAt', label: 'Created At', sortable: true, class: 'text-center'
                 },
                 {
                     key: 'actions', label: 'Actions'
@@ -225,7 +262,7 @@ export default
             totalRows    : 1,
             currentPage  : 1,
             perPage      : 5,
-            pageOptions  : [5, 10, 15, { value: 100, text: "Show a lot" }],
+            pageOptions  : [10, 25, 50, { value: 100, text: "Show a lot" }],
             sortBy       : '',
             sortDesc     : false,
             sortDirection: 'asc',
@@ -245,8 +282,8 @@ export default
             'hotels',
             [
                 'fetchHotels',
-                'createHotel', 
-                'updateHotel', 
+                'createHotel',
+                'updateHotel',
                 'deleteHotel'
             ]
         ),
@@ -268,15 +305,49 @@ export default
             this.totalRows = filteredItems.length
             this.currentPage = 1
         },
-        printHello() 
+        checkFormCreateValidity()
         {
-            console.log('Hello World');
-        }
-    }, 
+            const valid = this.$refs.formCreate.checkValidity();
+
+            this.formCreateState.name    = this.formCreateData.name    == null || this.formCreateData.name   == '' ? false : true ;
+            this.formCreateState.address = this.formCreateData.address == null || this.formCreateData.address == '' ? false : true;
+            return valid;
+        },
+        resetModalCreate()
+        {
+            this.formCreateData.name    = null;
+            this.formCreateData.address = null;
+
+            this.formCreateState.name    = null;
+            this.formCreateState.address = null;
+        },
+        handleModalCreateOk(bvModalEvent)
+        {
+            // Prevent modal from closing
+            bvModalEvent.preventDefault()
+
+            // Trigger submit handler
+            this.handleModalCreateSubmit()
+        },
+        handleModalCreateSubmit()
+        {
+            //! Exit when the form isn't valid
+            if (!this.checkFormCreateValidity())
+            {
+                return
+            }
+
+            //! Hide the modal manually
+            this.$nextTick(() =>
+                {
+                    this.$bvModal.hide('modal-prevent-closing')
+                }
+            );
+        },
+    },
     mounted: async function () 
     {
-        await this.fetchHotels({requestData : null});  
-        this.totalRows = this.items.length; 
+        await this.fetchHotels({ requestData: null });
     }
 };
 

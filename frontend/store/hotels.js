@@ -4,7 +4,7 @@ const endpoint = 'hotels';
 
 export const state = () => (
     {
-        hotels: []
+        items: null
     }
 )
 
@@ -17,7 +17,7 @@ export const actions =
 {
     async fetchHotels({ commit, dispatch }, requestData) 
     { 
-        const hotels = await this.$axios.get(
+        const response = await this.$axios.get(
             `${endpoint}`, 
             {
                 params: 
@@ -31,9 +31,9 @@ export const actions =
             }
         );
         
-        commit('addHotels', hotels);
+        commit('addItems', response.data);
 
-        return hotels; 
+        return response.data; 
     }, 
     async createHotel({ commit, dispatch }, requestData) 
     {
@@ -69,10 +69,8 @@ export const actions =
 
 export const mutations =
 {
-    addHotels(state, hotels)
+    addItems(state, items)
     {
-        state.hotels.push(
-            { ...hotels }
-        )
+        state.items = items;
     },
 };
