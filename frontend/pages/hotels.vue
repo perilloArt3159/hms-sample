@@ -8,12 +8,8 @@
 
         <template v-if="items!=null">
             <b-container fluid>
-                
                 <div>
-                    <b-button 
-                        class="d-flex align-items-center"
-                        v-b-modal.modal-create
-                    >
+                    <b-button class="d-flex align-items-center" variant="primary" v-b-modal.modal-create>
                         <i class="bi bi-plus-circle">
 
                         </i>
@@ -22,45 +18,19 @@
                         </span>
                     </b-button>
 
-                    <b-modal 
-                        id="modal-create"     
-                        title="Add Hotel"
-                        @show="resetModalCreate"
-                        @hidden="resetModalCreate"
-                        @ok="handleModalCreateOk"
-                    >
-                        <form ref="formCreate" 
-                            @submit.stop.prevent="handleFormCreateSubmit"
-                        >
-                            <b-form-group
-                                label="Name"
-                                label-for="name-input"
-                                invalid-feedback="Name is required"
-                                :state="formCreateState.name"
-                            >
-                                <b-form-input
-                                    id="name-input"
-                                    v-model="formCreateData.name"
-                                    placeholder="Enter Name"
-                                    required
-                                    :state="formCreateState.name"
-                                >
+                    <b-modal id="modal-create" title="Add Hotel" @show="resetModalCreate" @hidden="resetModalCreate"
+                        @ok="handleModalCreateOk">
+                        <form ref="formCreate" @submit.stop.prevent="handleFormCreateSubmit">
+                            <b-form-group label="Name" label-for="name-input" invalid-feedback="Name is required"
+                                :state="formCreateState.name">
+                                <b-form-input id="name-input" v-model="formCreateData.name" placeholder="Enter Name"
+                                    required :state="formCreateState.name">
                                 </b-form-input>
                             </b-form-group>
-                            <b-form-group
-                                label="Address"
-                                label-for="address-input"
-                                invalid-feedback="Address is required"
-                                :state="formCreateState.address"
-                            >
-                                <b-form-textarea
-                                    id="address-input"
-                                    v-model="formCreateData.address"
-                                    rows="3"
-                                    placeholder="Enter Address..."
-                                    required
-                                    :state="formCreateState.address"
-                                >
+                            <b-form-group label="Address" label-for="address-input"
+                                invalid-feedback="Address is required" :state="formCreateState.address">
+                                <b-form-textarea id="address-input" v-model="formCreateData.address" rows="3"
+                                    placeholder="Enter Address..." required :state="formCreateState.address">
 
                                 </b-form-textarea>
                             </b-form-group>
@@ -135,55 +105,40 @@
                     </b-col>
 
                     <b-col sm="7" md="6" class="my-1">
-                        <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill"
-                            size="sm" class="my-0">
+                        <b-pagination v-model="currentPage" :total-rows="items.data.pagination.total"
+                            :per-page="perPage" align="fill" size="sm" class="my-0">
                         </b-pagination>
                     </b-col>
                 </b-row>
 
                 <!-- Main table element -->
-                <b-table 
-                    :items="items.data.items" 
-                    :fields="fields" 
-                    :current-page="1" 
-                    :per-page="perPage"
-                    :filter="filter" 
-                    :filter-included-fields="filterOn" 
-                    :sort-by.sync="sortBy"
-                    :sort-desc.sync="sortDesc" 
-                    :sort-direction="sortDirection" 
-                    stacked="md" 
-                    show-empty 
-                    small
-                    @filtered="onFiltered"
-                >
+                <b-table :items="items.data.items" :fields="fields" :current-page="items.data.pagination.current"
+                    :per-page="items.data.pagination.size" :filter="filter" :filter-included-fields="filterOn"
+                    :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection" stacked="md"
+                    show-empty @filtered="onFiltered">
                     <!-- BUSY STATE -->
                     <template #table-busy>
                         <div class="text-center text-danger my-2">
-                            <b-spinner class="align-middle" variant="primary"/>
+                            <b-spinner class="align-middle" variant="primary" />
                             <strong class="text-primary">Loading...</strong>
                         </div>
                     </template>
                     <!-- END BUSY STATE -->
+
+                    <!-- A virtual column -->
+                    <template #cell(#)="row">
+                        {{ row.index + 1 }}
+                    </template>
 
                     <template #cell(key)="row">
                         {{ row.value.first }} {{ row.value.last }}
                     </template>
 
                     <template #cell(actions)="row">
-                        <b-button 
-                            size="sm"
-                            class="mr-1"
-                            variant="info"
-                            @click="info(row.item, row.index, $event.target)" 
-                            >
+                        <b-button size="sm" class="mr-1" variant="info" @click="updateItem(row.item)">
                             <i class="bi bi-pen-fill fs-6"></i>
                         </b-button>
-                        <b-button 
-                            size="sm"
-                            variant="danger" 
-                            @click="deleteItem()"
-                        >
+                        <b-button size="sm" variant="danger" @click="deleteItem(row.item.slug)">
                             <i class="bi bi-trash-fill fs-6"></i>
                         </b-button>
                     </template>
@@ -264,6 +219,7 @@ export default
             },
             fields:
             [
+                '#',
                 {
                     key          : "name",
                     label        : 'Name',
@@ -312,13 +268,28 @@ export default
                 'deleteHotel'
             ]
         ),
-
-        info(item, index, button) 
+        updateItem() 
         {
-            this.infoModal.title = `Row index: ${index}`
-            this.infoModal.content = JSON.stringify(item, null, 2)
-            this.$root.$emit('bv::show::modal', this.infoModal.id, button)
+            
         },
+        deleteItem: debounce(
+            async function (slug) 
+            {
+                await this.deleteHotel(slug);
+                await this.fetchHotels({ requestData: null }); 
+
+                this.$bvToast.toast(
+                    `Record Deleted`,
+                    {
+                        title        : 'Success',
+                        autoHideDelay: 5000,
+                        appendToast  : true,
+                        variant      : 'primary'
+                    }
+                );
+            },
+            250 
+        ),
         resetInfoModal() 
         {
             this.infoModal.title = ''
@@ -354,7 +325,8 @@ export default
             // Trigger submit handler
             this.handleModalCreateSubmit()
         },
-        handleModalCreateSubmit: debounce(function (e) 
+        handleModalCreateSubmit: debounce(
+            async function (e) 
             {
                 //! Exit when the form isn't valid
                 if (!this.checkFormCreateValidity())
@@ -362,7 +334,8 @@ export default
                     return
                 }
 
-                this.createHotel(this.formCreateData); 
+                await this.createHotel(this.formCreateData); 
+                await this.fetchHotels({ requestData: null }); 
 
                 this.$bvToast.toast(
                     `Record Created`,
@@ -372,7 +345,7 @@ export default
                         appendToast  : true,
                         variant      : 'primary'
                     }
-                )
+                );
 
                 //! Hide the modal manually
                 this.$nextTick(() =>

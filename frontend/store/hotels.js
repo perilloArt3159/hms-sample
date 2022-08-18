@@ -61,7 +61,7 @@ export const actions =
             }
         ); 
     },
-    async deleteHotel({ commit, dispatch }, $slug)
+    async deleteHotel({ commit, dispatch }, slug)
     {
         await this.$axios.delete(`${endpoint}/${slug}/destroy`);
     }
