@@ -12,7 +12,7 @@
                 <div>
                     <b-button 
                         class="d-flex align-items-center"
-                        v-b-modal.modal-1
+                        v-b-modal.modal-create
                     >
                         <i class="bi bi-plus-circle">
 
@@ -23,7 +23,7 @@
                     </b-button>
 
                     <b-modal 
-                        id="modal-1"     
+                        id="modal-create"     
                         title="Add Hotel"
                         @show="resetModalCreate"
                         @hidden="resetModalCreate"
@@ -157,16 +157,34 @@
                     small
                     @filtered="onFiltered"
                 >
-                    <template #cell(name)="row">
+                    <!-- BUSY STATE -->
+                    <template #table-busy>
+                        <div class="text-center text-danger my-2">
+                            <b-spinner class="align-middle" variant="primary"/>
+                            <strong class="text-primary">Loading...</strong>
+                        </div>
+                    </template>
+                    <!-- END BUSY STATE -->
+
+                    <template #cell(key)="row">
                         {{ row.value.first }} {{ row.value.last }}
                     </template>
 
                     <template #cell(actions)="row">
-                        <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
-                            Info modal
+                        <b-button 
+                            size="sm"
+                            class="mr-1"
+                            variant="info"
+                            @click="info(row.item, row.index, $event.target)" 
+                            >
+                            <i class="bi bi-pen-fill fs-6"></i>
                         </b-button>
-                        <b-button size="sm" @click="row.toggleDetails">
-                            {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+                        <b-button 
+                            size="sm"
+                            variant="danger" 
+                            @click="deleteItem()"
+                        >
+                            <i class="bi bi-trash-fill fs-6"></i>
                         </b-button>
                     </template>
 
@@ -209,7 +227,7 @@ import
 }
 from 'vuex';
 
-import debounce from 'lodash'; 
+import { debounce } from 'lodash'; 
 
 export default
 {
@@ -247,16 +265,23 @@ export default
             fields:
             [
                 {
-                    key: 'name', label: 'Title', sortable: true, sortDirection: 'desc'
+                    key          : "name",
+                    label        : 'Name',
+                    sortable     : true,
                 },
                 {
-                    key: 'address', label: 'Address', sortable: true, class: 'text-center'
+                    key     : 'address',
+                    label   : 'Address',
+                    sortable: true,
                 },
                 {
-                    key: 'createdAt', label: 'Created At', sortable: true, class: 'text-center'
+                    key     : 'createdAt',
+                    label   : 'Created At',
+                    sortable: true,
                 },
                 {
-                    key: 'actions', label: 'Actions'
+                    key  : 'actions',
+                    label: 'Actions'
                 }
             ],
             totalRows    : 1,
@@ -329,21 +354,35 @@ export default
             // Trigger submit handler
             this.handleModalCreateSubmit()
         },
-        handleModalCreateSubmit()
-        {
-            //! Exit when the form isn't valid
-            if (!this.checkFormCreateValidity())
+        handleModalCreateSubmit: debounce(function (e) 
             {
-                return
-            }
-
-            //! Hide the modal manually
-            this.$nextTick(() =>
+                //! Exit when the form isn't valid
+                if (!this.checkFormCreateValidity())
                 {
-                    this.$bvModal.hide('modal-prevent-closing')
+                    return
                 }
-            );
-        },
+
+                this.createHotel(this.formCreateData); 
+
+                this.$bvToast.toast(
+                    `Record Created`,
+                    {
+                        title        : 'Success',
+                        autoHideDelay: 5000,
+                        appendToast  : true,
+                        variant      : 'primary'
+                    }
+                )
+
+                //! Hide the modal manually
+                this.$nextTick(() =>
+                    {
+                        this.$bvModal.hide('modal-create')
+                    }
+                ); 
+            },
+            250
+        )
     },
     mounted: async function () 
     {
