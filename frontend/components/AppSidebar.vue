@@ -7,12 +7,12 @@
             active : isActive   
         }"
     >
-        <div class="p-4">
+        <div class="px-4 py-2 border-b">
             <div 
                 v-if="isActive"
-                class="flex justify-around align-items-center"
+                class="flex justify-around items-center"
             >
-                <span class="shrink text-md tracking-wider text-center">
+                <span class="text-md font-bold tracking-wider text-center">
                     Hotel Management System
                 </span>    
                 <span 
@@ -32,14 +32,14 @@
             </div>
             <div 
                 v-else
-                class="flex justify-around align-items-center"
+                class="flex justify-around items-center"
             >
                 <span 
                     class="
-                        text-3xl
+                        text-4xl
                         cursor-pointer  
                         ease-in duration-200
-                        hover:scale-125 
+                        hover:scale-110 
                         hover:text-blue-400
                     "
                     @click="toggleIsActive"
@@ -50,10 +50,28 @@
                 </span>
             </div>
         </div>
-        <div>
+        <div class="my-2">
             <nav>
                 <ul>
+                    <li 
+                        v-for="link in items" 
+                        :key="link.name"
+                        class="px-1"
+                    >
+                        <nuxt-link
+                            :to="link.to"
+                            class="sidebar-item rounded text-center my-1"
+                        >
+            
+                        <i :class="[link.icon, 'text-2xl']">
 
+                        </i>
+            
+                        <span>
+                            {{ link.title }}
+                        </span>
+                    </nuxt-link>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -65,7 +83,8 @@
 #sidebar 
 {
     height          : 100vh;
-    background-color: #fff;
+    background-color : #111; 
+    color           : white; 
     width           : 60px;
     position        : fixed; 
     top             : 0; 
@@ -78,11 +97,19 @@
     &.active 
     {
         width : 240px; 
+        background-color: #fff;
+        color           : grey;
 
-        .sidebar-item span 
+        .sidebar-item span
         {
-            opacity  : 1;
-            height: 100%;
+            opacity     : 1;
+            height      : 100%;
+            color       : grey;
+
+            &.nuxt-link-exact-active span
+            {
+                color     : white;
+            }
         }
     }
 
@@ -118,12 +145,14 @@
     a.nuxt-link-active 
     {
         font-weight: bold;
+        color : white;
     }
 
     /* exact link will show the primary color for only the exact matching link */
     a.nuxt-link-exact-active 
     {
-        background-color: #ffffff20;
+        background: linear-gradient(to left, #00ffff 0%, #0066ff 100%);
+        color : white;
     }
 }
 

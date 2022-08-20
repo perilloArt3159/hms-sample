@@ -1,7 +1,9 @@
 <template>
     <div id="content">
         <app-sidebar/>
-        <div id="main">
+        <div 
+            id="main"
+        >
             <app-header/>
             <main>
                 <transition name="home">                  
@@ -30,6 +32,7 @@
         width          : calc(100% - 60px); 
         height         : 100%; 
         left           : 60px;
+        padding        : 0 2.5rem; 
         transition     : all 0.5s ease; 
         overflow-y     : auto;
     
