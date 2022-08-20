@@ -6,13 +6,6 @@
 
 		<hr class="hr" />
 
-		<b-row>
-			<b-col class="text-muted">
-				<small class="text-muted">
-					To Be Added
-				</small>
-			</b-col>
-		</b-row>
 	</div>
 </template>
 

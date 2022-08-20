@@ -4,13 +4,8 @@
         <div id="main">
             <app-header/>
             <main>
-                <transition name="home">
-                    <b-container 
-                        class="my-3"
-                        fluid
-                    >
+                <transition name="home">                  
                         <Nuxt />
-                    </b-container>
                 </transition>
             </main>
             <app-footer/>
