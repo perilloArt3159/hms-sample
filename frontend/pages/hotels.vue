@@ -24,8 +24,13 @@
                         Sort By 
                     </label>
                     <div class="col-span-3">
-                        <select id="selectSortBy" class="form-control form-control-select w-full">
-                            <option>
+                        <select 
+                            v-model="sortBy"
+                            id="selectSortBy" 
+                            class="form-control form-control-select w-full"
+                            @change="onPageChange"
+                        >
+                            <option :value="null">
                                 None
                             </option>
                             <option 
@@ -38,14 +43,19 @@
                         </select>
                     </div>
                     <div>
-                        <select id="selectSortDirection" class="form-control form-control-select w-full">
-                            <option>
+                        <select 
+                            v-model="sortDirection"
+                            id="selectSortDirection" 
+                            class="form-control form-control-select w-full"
+                            @change="onPageChange"
+                        >
+                            <option :value="null">
                                 None
                             </option>
                             <option 
                                 v-for="direction in sortDirections"
                                 :key="direction.key"
-                                :value="direction.column"
+                                :value="direction.value"
                             >
                                 {{ direction.label }}
                             </option>
@@ -63,10 +73,12 @@
                         Show
                     </label>
                     <div class="col-span-4">
-                        <select id="selectShowItems" class="form-control form-control-select w-full">
-                            <option>
-                                None
-                            </option>
+                        <select
+                            v-model="paginationInfo.perPage" 
+                            id="selectShowItems" 
+                            class="form-control form-control-select w-full"
+                            @change="onPageChange"
+                        >
                             <option 
                                 v-for="item in pageOptions"
                                 :key="item.key"
@@ -93,6 +105,7 @@
                             class="form-control form-control-input w-full" 
                             type="text" 
                             id="inputSearch"
+                            placeholder="Search Items"
                         >
                     </div>
                     <div class="">
@@ -179,7 +192,7 @@
                             :key="item.slug"
                         >
                             <td class="p-2"> 
-                                {{ index + 1 }}
+                                {{ (index + 1) + (paginationInfo.perPage * (paginationInfo.currentPage - 1)) }}
                             </td>
                             <td class="p-2">
                                 {{ item.name }}
@@ -239,11 +252,15 @@ export default
                     return { text: f.label, value: f.column }
                 })
         },
+        totalPages() 
+        {
+            return Math.ceil(this.paginationInfo.totalItems / this.paginationInfo.perPage);
+        },
         paginationItems() 
         {
             const range             = [];
             const maxVisibleButtons = 5;
-            const totalPages        = this.paginationInfo.totalPages;
+            const totalPages        = this.totalPages;
             const currentPage       = this.paginationInfo.currentPage; 
 
             for (
@@ -354,9 +371,9 @@ export default
                     label: "100 Items" 
                 }
             ],
-            sortBy       : '',
+            sortBy       : null,
             sortDesc     : false,
-            sortDirection: 'asc',
+            sortDirection: null,
             filter       : null,
             paginationInfo : 
             {
@@ -383,11 +400,11 @@ export default
             {
                 const requestData = 
                 {
-                    'search'       : this.filter,
-                    'sizePerPage'  : this.paginationInfo.perPage,
-                    'showPage'     : this.paginationInfo.currentPage,
-                    'sortByColumn' : this.sortBy, 
-                    'sortDirection': this.sortDirection 
+                    'search'       : this.filter                        ?? null,
+                    'sizePerPage'  : this.paginationInfo.perPage        ?? 10,
+                    'showPage'     : this.paginationInfo.currentPage    ?? 1,
+                    'sortByColumn' : this.sortBy                        ?? null, 
+                    'sortDirection': this.sortDirection                 ?? 'asc'
                 }
 
                 await this.fetchHotels(
@@ -574,7 +591,7 @@ export default
         paginationPageNext: debounce (
             function() 
             {
-                if (this.paginationInfo.currentPage < this.paginationInfo.totalPages)
+                if (this.paginationInfo.currentPage < this.totalPages)
                 {
                     this.paginationInfo.currentPage++ ; 
                 }
@@ -586,7 +603,7 @@ export default
         paginationPageLast: debounce (
             function() 
             {
-                this.paginationInfo.currentPage = this.paginationInfo.totalPages; 
+                this.paginationInfo.currentPage =  this.totalPages; 
 
                 this.onPageChange(); 
             }, 
