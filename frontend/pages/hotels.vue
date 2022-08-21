@@ -12,7 +12,6 @@
             v-if="items"
 			class="my-5"
 		>
-
             <!-- CONTROLS-->
             <div class="grid grid-cols-2 grid-rows-2 gap-4 my-2 ">
 
@@ -90,13 +89,14 @@
                     </label>
                     <div class="col-span-3">
                         <input
+                            v-model="filter"
                             class="form-control form-control-input w-full" 
                             type="text" 
                             id="inputSearch"
                         >
                     </div>
                     <div class="">
-                        <button class="btn btn-red p-2 w-full">
+                        <button class="btn btn-red p-2 w-full" @click="filter=null">
                             <i class="bi bi-eraser-fill"></i>
                             <span class="capitalize tracking-wide">clear</span>
                         </button>
@@ -107,22 +107,40 @@
                 <!-- PAGINATION-->
                 <div class="flex items-center justify-center">
                     <ul class="flex items-center justify-center text-xl">
-                        <li class="bg-blue-400 py-1 px-3 text-white cursor-pointer rounded ease-in duration-200 font-bold mx-1 hover:bg-blue-500 hover:scale-110">
+                        <li 
+                            class="bg-blue-400 py-1 px-3 text-white cursor-pointer rounded ease-in duration-200 font-bold mx-1 hover:bg-blue-500 hover:scale-110"
+                            @click="paginationPageFirst"        
+                        >
                             <i class="bi bi-arrow-bar-left">
                             </i>
                         </li>
-                        <li class="bg-blue-400 py-1 px-3 text-white cursor-pointer rounded ease-in duration-200 font-bold mx-1 hover:bg-blue-500 hover:scale-110"> 
+                        <li 
+                            class="bg-blue-400 py-1 px-3 text-white cursor-pointer rounded ease-in duration-200 font-bold mx-1 hover:bg-blue-500 hover:scale-110"
+                            @click="paginationPagePrevious"    
+                        > 
                             <i class="bi bi-arrow-left">
                                 
                             </i>
                         </li>
-                        <li>1</li>
-                        <li>2</li>
-                        <li>3</li>
-                        <li class="bg-blue-400 py-1 px-3 text-white cursor-pointer rounded ease-in duration-200 font-bold mx-1 hover:bg-blue-500 hover:scale-110">
+                        <li
+                            v-for="page in paginationItems"
+                            class="py-1 px-3 text-white cursor-pointer rounded ease-in duration-200 font-bold mx-1 hover:bg-blue-500 hover:scale-110"
+                            :key="page.value"
+                            :class="[page.isActive ? 'scale-110 bg-blue-500' : 'bg-blue-400' ]"
+                            @click="paginationPageSelect(page.value)"
+                        >
+                            {{ page.value }}
+                        </li>
+                        <li 
+                            class="bg-blue-400 py-1 px-3 text-white cursor-pointer rounded ease-in duration-200 font-bold mx-1 hover:bg-blue-500 hover:scale-110"
+                            @click="paginationPageNext"    
+                        >
                             <i class="bi bi-arrow-right"></i>
                         </li>
-                        <li class="bg-blue-400 py-1 px-3 text-white cursor-pointer rounded ease-in duration-200 font-bold mx-1 hover:bg-blue-500 hover:scale-110">
+                        <li 
+                            class="bg-blue-400 py-1 px-3 text-white cursor-pointer rounded ease-in duration-200 font-bold mx-1 hover:bg-blue-500 hover:scale-110"
+                            @click="paginationPageLast"    
+                        >
                             <i class="bi bi-arrow-bar-right">
                                 
                             </i>
@@ -220,6 +238,32 @@ export default
                 {
                     return { text: f.label, value: f.column }
                 })
+        },
+        paginationItems() 
+        {
+            const range             = [];
+            const maxVisibleButtons = 5;
+            const totalPages        = this.paginationInfo.totalPages;
+            const currentPage       = this.paginationInfo.currentPage; 
+
+            for (
+                let i = 1;
+                i <= Math.min(maxVisibleButtons, totalPages);
+                i++
+            )
+            {
+                const increase = currentPage + 1 > maxVisibleButtons ? currentPage - maxVisibleButtons : 0; 
+
+                range.push(
+                    {
+                        value     : i + increase,
+                        name      : i + increase,
+                        isActive  : i + increase === currentPage
+                    }
+                );
+
+            } 
+            return range;
         }
     },
     data  : () => (
@@ -318,6 +362,8 @@ export default
             {
                 perPage    : null,
                 currentPage: null,
+                totalItems : null, 
+                totalPages : null,
             }
         }
     ), 
@@ -493,7 +539,60 @@ export default
                 );
             },
             250
+        ), 
+        /* PAGINATION CONTROLS */
+        paginationPageFirst: debounce (
+            function() 
+            {
+                this.paginationInfo.currentPage = 1; 
+
+                this.onPageChange(); 
+            }, 
+            250
+        ), 
+        paginationPagePrevious: debounce (
+            function() 
+            {
+                if (this.paginationInfo.currentPage > 1)
+                {
+                    this.paginationInfo.currentPage-- ; 
+                }
+
+                this.onPageChange(); 
+            }, 
+            250
+        ),
+        paginationPageSelect: debounce (
+            function(value) 
+            {
+                this.paginationInfo.currentPage = value; 
+
+                this.onPageChange(); 
+            }, 
+            250
+        ),
+        paginationPageNext: debounce (
+            function() 
+            {
+                if (this.paginationInfo.currentPage < this.paginationInfo.totalPages)
+                {
+                    this.paginationInfo.currentPage++ ; 
+                }
+
+                this.onPageChange(); 
+            }, 
+            250
+        ),
+        paginationPageLast: debounce (
+            function() 
+            {
+                this.paginationInfo.currentPage = this.paginationInfo.totalPages; 
+
+                this.onPageChange(); 
+            }, 
+            250
         )
+        /* END PAGINATION CONTROLS */
     },
     mounted: async function () 
     {
@@ -501,6 +600,9 @@ export default
 
         this.paginationInfo.currentPage = this.items.data.pagination.current;
         this.paginationInfo.perPage     = this.items.data.pagination.size;
+        this.paginationInfo.totalItems  = this.items.data.pagination.total;
+
+        this.paginationInfo.totalPages  = Math.ceil(this.items.data.pagination.total / this.items.data.pagination.size);
     }, 
     watch:
     {
