@@ -12,9 +12,129 @@
             v-if="items"
 			class="my-5"
 		>
-			
-            <div>
-                <table class="table-auto w-full rounded overflow-hidden">
+
+            <!-- CONTROLS-->
+            <div class="grid grid-cols-2 grid-rows-2 gap-4 my-2 ">
+
+                <!-- SORT BY -->
+                <div class="grid grid-cols-5 gap-2 items-center">
+                    <label 
+                        for="selectSortBy"
+                        class="capitalize font-bold tracking-wider text-gray-400"
+                    >
+                        Sort By 
+                    </label>
+                    <div class="col-span-3">
+                        <select id="selectSortBy" class="form-control form-control-select w-full">
+                            <option>
+                                None
+                            </option>
+                            <option 
+                                v-for="field in fields"
+                                :key="field.key"
+                                :value="field.column"
+                            >
+                                {{ field.label }}
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <select id="selectSortDirection" class="form-control form-control-select w-full">
+                            <option>
+                                None
+                            </option>
+                            <option 
+                                v-for="direction in sortDirections"
+                                :key="direction.key"
+                                :value="direction.column"
+                            >
+                                {{ direction.label }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <!-- END SORT BY-->
+
+                <!-- SHOW ITEMS -->
+                <div class="grid grid-cols-5 gap-2 items-center">
+                    <label 
+                        for="selectShowItems"
+                        class="capitalize font-bold tracking-wider text-gray-400"
+                    >
+                        Show
+                    </label>
+                    <div class="col-span-4">
+                        <select id="selectShowItems" class="form-control form-control-select w-full">
+                            <option>
+                                None
+                            </option>
+                            <option 
+                                v-for="item in pageOptions"
+                                :key="item.key"
+                                :value="item.value"
+                            >
+                                {{ item.label }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <!-- END SHOW ITEMS -->
+
+                <!-- SEARCH -->
+                <div class="grid grid-cols-5 gap-2 items-center">
+                    <label 
+                        for="inputSearch"
+                        class="capitalize font-bold tracking-wider text-gray-400 "
+                    >
+                        Search 
+                    </label>
+                    <div class="col-span-3">
+                        <input
+                            class="form-control form-control-input w-full" 
+                            type="text" 
+                            id="inputSearch"
+                        >
+                    </div>
+                    <div class="">
+                        <button class="btn btn-red p-2 w-full">
+                            <i class="bi bi-eraser-fill"></i>
+                            <span class="capitalize tracking-wide">clear</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- END SEARCH -->
+
+                <!-- PAGINATION-->
+                <div class="flex items-center justify-center">
+                    <ul class="flex items-center justify-center text-xl">
+                        <li class="bg-blue-400 py-1 px-3 text-white cursor-pointer rounded ease-in duration-200 font-bold mx-1 hover:bg-blue-500 hover:scale-110">
+                            <i class="bi bi-arrow-bar-left">
+                            </i>
+                        </li>
+                        <li class="bg-blue-400 py-1 px-3 text-white cursor-pointer rounded ease-in duration-200 font-bold mx-1 hover:bg-blue-500 hover:scale-110"> 
+                            <i class="bi bi-arrow-left">
+                                
+                            </i>
+                        </li>
+                        <li>1</li>
+                        <li>2</li>
+                        <li>3</li>
+                        <li class="bg-blue-400 py-1 px-3 text-white cursor-pointer rounded ease-in duration-200 font-bold mx-1 hover:bg-blue-500 hover:scale-110">
+                            <i class="bi bi-arrow-right"></i>
+                        </li>
+                        <li class="bg-blue-400 py-1 px-3 text-white cursor-pointer rounded ease-in duration-200 font-bold mx-1 hover:bg-blue-500 hover:scale-110">
+                            <i class="bi bi-arrow-bar-right">
+                                
+                            </i>
+                        </li>
+                    </ul>
+                </div>
+                <!--END PAGINATION -->
+            </div>
+            <!-- END CONTROLS-->
+
+            <div class="my-5">
+                <table class="table-auto w-full rounded overflow-hidden shadow">
                     <thead>
                         <tr class="bg-blue-500 text-white tracking-widest capitalize text-left font-bold">
                             <th class="p-3">#</th>
@@ -30,8 +150,8 @@
                                 
                             </td>
                             <td class="p-2">
-                                <button class="bg-green-500 block rounded w-full font-bold p-1">
-                                    <i class="bi bi-plus text-xl text-white rounded"></i>
+                                <button class="btn btn-green w-full">
+                                    <i class="bi bi-plus text-xl"></i>
                                 </button>
                             </td>
                         </tr>
@@ -53,11 +173,11 @@
                                 {{ item.createdAt }}
                             </td>
                             <td class="grid grid-cols-2 gap-2 p-2">
-                                <button class="bg-blue-500 rounded p-1 font-bold">
-                                    <i class="bi bi-pen-fill text-xl text-white rounded"></i>
+                                <button class="btn btn-blue">
+                                    <i class="bi bi-pen-fill text-xl"></i>
                                 </button>
-                                <button class="bg-red-500 rounded p-1">
-                                    <i class="bi bi-trash-fill text-xl text-white rounded"></i>
+                                <button class="btn btn-red">
+                                    <i class="bi bi-trash-fill text-xl"></i>
                                 </button>
                             </td>
                         </tr>
@@ -135,7 +255,6 @@ export default
             },
             fields:
             [
-                '#',
                 {
                     key     : "name",
                     label   : 'Name',
@@ -154,28 +273,41 @@ export default
                     column  : 'created_at',
                     sortable: true,
                 },
+            ],
+            sortDirections : 
+            [
                 {
-                    key  : 'actions',
-                    label: 'Actions'
-                }
+                    key  : 'desc',
+                    value: 'desc',
+                    label: 'DESC'
+                }, 
+                {
+                    key  : 'asc',
+                    value: 'desc',
+                    label: 'ASC'
+                }, 
             ],
             pageOptions:
             [
                 {
-                    value : 10, 
-                    text  : "10 Items"
+                    key  : 1,
+                    value: 10,
+                    label: "10 Items"
                 }, 
                 {
-                    value: 25, 
-                    text : "25 Items"    
+                    key  : 2,
+                    value: 25,
+                    label: "25 Items"
                 },
-                {
+                {                    
+                    key  : 3,
                     value: 50,
-                    text: "50 Items" 
+                    label: "50 Items"
                 },
-                { 
+                {                     
+                    key   : 4,
                     value: 100,
-                    text: "100 Items" 
+                    label: "100 Items" 
                 }
             ],
             sortBy       : '',

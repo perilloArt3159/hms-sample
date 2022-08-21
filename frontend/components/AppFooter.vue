@@ -1,6 +1,10 @@
 <template>
     <footer class="py-3"> 
-    
+        <div class="flex items-center">
+            <small class="text-gray-400 ml-auto">
+                &#169; perilloArt3159
+            </small>
+        </div>
     </footer>
 </template>
 
