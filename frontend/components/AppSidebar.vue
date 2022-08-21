@@ -83,7 +83,7 @@
 #sidebar 
 {
     height          : 100vh;
-    background-color : #111; 
+    background-color : #222; 
     color           : white; 
     width           : 60px;
     position        : fixed; 
@@ -100,59 +100,63 @@
         background-color: #fff;
         color           : grey;
 
-        .sidebar-item span
+        .sidebar-item 
         {
-            opacity     : 1;
-            height      : 100%;
-            color       : grey;
-
-            &.nuxt-link-exact-active span
+            &:hover 
             {
-                color     : white;
+                background-color: #00000020;
+                transform       : scale(1.05);
+            }
+
+            span 
+            {
+                opacity     : 1;
+                height      : 100%;
+                color       : grey;
+            }
+
+            i 
+            {
+                color : grey;
             }
         }
     }
 
     .sidebar-item 
     {
-        color          : white;
+        color          : grey;
         font-weight    : bold;
         padding        : 11px 14px;
         display        : flex;
         align-items    : center;
         text-decoration: none;
-        transition     : all 0.4s linear;
+        transition     : all 0.4s ease-in;
 
         span 
         {
             height     : 0;
             opacity    : 0;
-            margin-left: 10px;
+            margin-left: 1rem;
             transition : all 0.2s linear;
         }
 
         &:hover 
         {
-            background-color: #00000020;
+            background-color: #ffffff20;
+            transform       : scale(1.05);
         }
 
-        &.active 
+
+        &.nuxt-link-exact-active 
         {
-            background-color: #2BACF8;
+            background: linear-gradient(to left, #00ffff 0%, #0066ff 100%);
+
+            i, 
+            span
+            {
+                color : white;
+            } 
         }
-    }
-
-    a.nuxt-link-active 
-    {
-        font-weight: bold;
-        color : white;
-    }
-
-    /* exact link will show the primary color for only the exact matching link */
-    a.nuxt-link-exact-active 
-    {
-        background: linear-gradient(to left, #00ffff 0%, #0066ff 100%);
-        color : white;
     }
 }
 
