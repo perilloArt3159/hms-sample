@@ -1,11 +1,18 @@
 <template>
 	<div>
-		<h3 class="font-weight-bold text-secondary">
-			Home
-		</h3>
+		<h2 
+			class="font-bold text-gray-400 text-3xl my-3 tracking-wider capitalize"
+		>
+			home
+		</h2>
 
 		<hr class="hr" />
 
+		<div 
+			class="my-5 text-gray-400 italic"
+		>
+			To be Added
+		</div>
 	</div>
 </template>
 

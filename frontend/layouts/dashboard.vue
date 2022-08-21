@@ -6,9 +6,7 @@
         >
             <app-header/>
             <main>
-                <transition name="home">                  
-                        <Nuxt />
-                </transition>
+                <Nuxt />
             </main>
             <app-footer/>
         </div>

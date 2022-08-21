@@ -1,18 +1,18 @@
 <template>
     <div>
-        <h3 class="font-weight-bold text-secondary">
-            About Us
-        </h3>
+        <h2 
+			class="font-bold text-gray-400 text-3xl my-3 tracking-wider capitalize"
+		>
+			about us
+		</h2>
 
-        <hr class="hr" />
+		<hr class="hr" />
 
-        <b-row>
-            <b-col class="text-muted">
-                <small class="text-muted">
-                    To Be Added
-                </small>
-            </b-col>
-        </b-row>
+		<div 
+			class="my-5 text-gray-400 italic"
+		>
+			To be Added
+		</div>
     </div>
 </template>
 
