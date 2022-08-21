@@ -1,14 +1,14 @@
 <template>
     <div id="content">
-        <app-sidebar/>
+        <the-sidebar/>
         <div 
             id="main"
         >
-            <app-header/>
+            <the-header/>
             <main>
                 <Nuxt />
             </main>
-            <app-footer/>
+            <the-footer/>
         </div>
     </div>
 </template>
