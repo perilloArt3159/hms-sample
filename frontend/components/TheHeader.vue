@@ -75,7 +75,7 @@
 
             &:hover 
             {
-                color: #0066ff ;
+                color    : rgb(59 130 246);
                 transform: scale(1.01);
             }
         }

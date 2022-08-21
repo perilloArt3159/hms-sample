@@ -181,7 +181,10 @@
                                 
                             </td>
                             <td class="p-2">
-                                <button class="btn btn-green w-full">
+                                <button 
+                                    class="btn btn-green w-full"
+                                    @click="modalCreateActive=true"
+                                >
                                     <i class="bi bi-plus text-xl"></i>
                                 </button>
                             </td>
@@ -204,7 +207,9 @@
                                 {{ item.createdAt }}
                             </td>
                             <td class="grid grid-cols-2 gap-2 p-2">
-                                <button class="btn btn-blue">
+                                <button class="btn btn-blue"
+                                    @click="setupFormUpdate(item)"
+                                >
                                     <i class="bi bi-pen-fill text-xl"></i>
                                 </button>
                                 <button class="btn btn-red">
@@ -216,7 +221,30 @@
                 </table>
             </div>
 
+            <app-modal
+                v-show="modalCreateActive"
+                @close-modal="modalCreateActive=false"
+            >
+                <template #header>
+                    Add Hotel 
+                </template>
+                <template #default>
 
+                </template>
+            </app-modal>
+
+
+            <app-modal
+                v-show="modalUpdateActive"
+                @close-modal="modalUpdateActive=false"
+            >
+                <template #header>
+                    Update Hotel
+                </template>
+                <template #default>
+                    {{ formUpdate.data }}
+                </template>
+            </app-modal>
 		</div>
     </div>
 </template>
@@ -419,6 +447,7 @@ export default
 
             this.formUpdate.data.name    = row.name;
             this.formUpdate.data.address = row.address;
+            this.modalUpdateActive       = true;     
         },
         deleteItem: debounce(
             async function (slug) 
@@ -626,6 +655,10 @@ export default
         filter: function (newValue, oldValue)
         {
             this.onPageChange();
+        }, 
+        modalCreateActive : function(newvalue, oldValue)
+        {
+            
         }
     }
 };
