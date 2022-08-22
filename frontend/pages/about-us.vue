@@ -20,8 +20,9 @@
 
 export default
 {
-    name  : 'AboutUs',
-    layout: "dashboard",
+	middleware: 'auth',
+	name      : 'AboutUs',
+	layout    : "dashboard",
 }
 
 </script>

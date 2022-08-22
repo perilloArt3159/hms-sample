@@ -4,6 +4,8 @@ namespace App\Http\Requests\Hotel;
 
 use App\Http\Requests\ResponseRequest; 
 
+use Illuminate\Support\Facades\Auth;
+
 class ListHotelRequest extends ResponseRequest
 {
     /**
@@ -13,7 +15,7 @@ class ListHotelRequest extends ResponseRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::check();
     }
 
     /**

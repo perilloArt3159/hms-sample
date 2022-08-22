@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ResponseRequest; 
 
-class AuthLoginRequest extends FormRequest
+use Illuminate\Support\Facades\Auth;
+
+class AuthLoginRequest extends ResponseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +15,7 @@ class AuthLoginRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::guest();
     }
 
     /**
@@ -24,7 +26,7 @@ class AuthLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email'     => ['required', 'email'],
+            'email'     => ['required', 'email', 'string'],
             'password'  => ['required', 'string'],
         ];
     }

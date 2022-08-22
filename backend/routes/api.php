@@ -40,7 +40,7 @@ Route::prefix('auth')->group(
     }
 );
 
-Route::prefix('hotels')->group(
+Route::prefix('hotels')->middleware('auth:sanctum')->group( 
     function() 
     {
         Route::get('',                  [ HotelApiController::class, 'index'   ])->name('hotels');

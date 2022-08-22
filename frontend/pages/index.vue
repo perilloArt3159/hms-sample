@@ -20,8 +20,9 @@
 
 export default
 {
-    name  : 'IndexPage',
-    layout: "dashboard",
+	middleware: 'auth',
+	name      : 'IndexPage',
+	layout    : "dashboard",
 }
 
 </script>

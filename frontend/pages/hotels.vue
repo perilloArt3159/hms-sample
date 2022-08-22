@@ -387,8 +387,9 @@ import { debounce } from 'lodash';
 
 export default
 {
-    name    : 'HotelsPage',
-    layout  : "dashboard",
+    middleware: 'auth',
+    name      : 'HotelsPage',
+    layout    : "dashboard",
     computed:
     {
         ...mapState( 'hotels', ['items']),   
