@@ -1,11 +1,86 @@
 _type: export
 __export_format: 4
-__export_date: 2022-08-16T13:08:31.336Z
+__export_date: 2022-08-22T15:47:19.631Z
 __export_source: insomnia.desktop.app:v2022.4.2
 resources:
+  - _id: req_0a3b6584c5944140a8841bbf3c16696b
+    parentId: fld_d66a613eaf8741e098460f7b36cbbcd8
+    modified: 1661183206230
+    created: 1661166404435
+    url: "{{ _.url.base }}/auth/login"
+    name: Login
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"email" 		: "admin@test.com", 
+        	"password"  : "admin"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_3f86163a46254ffd9e2d2c40c39ee1f2
+    authentication: {}
+    metaSortKey: -1661166404435
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_d66a613eaf8741e098460f7b36cbbcd8
+    parentId: wrk_a8ac6388bb714a3ebb3fade6dd94ca33
+    modified: 1661166400805
+    created: 1661166400805
+    name: Auth
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1661166400805
+    _type: request_group
+  - _id: wrk_a8ac6388bb714a3ebb3fade6dd94ca33
+    parentId: null
+    modified: 1660644008757
+    created: 1660644008757
+    name: hms-sample
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_225bea97f0a24903a2cd1942acf49100
+    parentId: fld_d66a613eaf8741e098460f7b36cbbcd8
+    modified: 1661179126299
+    created: 1661178965570
+    url: "{{ _.url.base }}/auth/logout"
+    name: Logout
+    description: ""
+    method: POST
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_df55b087f6db44f5ba22499ac5c99df7
+        name: Accept
+        value: application/json
+        description: ""
+    authentication:
+      type: bearer
+      token: "{{ _.bearerToken }}"
+    metaSortKey: -1661166404385
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
   - _id: req_1f1f33db36064df7b8ec6912096ae909
     parentId: fld_8e04b275b31e475b951d287a1ce6b9fe
-    modified: 1660655207219
+    modified: 1661179471760
     created: 1660644064925
     url: "{{ _.url.base }}/hotels"
     name: List
@@ -26,7 +101,13 @@ resources:
       - name: Content-Type
         value: application/json
         id: pair_b35fe5bbfcaf44b2849bb034aab7659c
-    authentication: {}
+      - id: pair_8bcc396c87ad41cf8351c4a02d6fc566
+        name: Accept
+        value: application/json
+        description: ""
+    authentication:
+      type: bearer
+      token: "{{ _.bearerToken }}"
     metaSortKey: -1660644064925
     isPrivate: false
     settingStoreCookies: true
@@ -46,17 +127,9 @@ resources:
     environmentPropertyOrder: null
     metaSortKey: -1660644061324
     _type: request_group
-  - _id: wrk_a8ac6388bb714a3ebb3fade6dd94ca33
-    parentId: null
-    modified: 1660644008757
-    created: 1660644008757
-    name: hms-sample
-    description: ""
-    scope: collection
-    _type: workspace
   - _id: req_e0b3af931ff44f0d97f70851a704508e
     parentId: fld_8e04b275b31e475b951d287a1ce6b9fe
-    modified: 1660655169692
+    modified: 1661179444506
     created: 1660644164257
     url: "{{ _.url.base }}/hotels/create"
     name: Create
@@ -74,7 +147,13 @@ resources:
       - name: Content-Type
         value: application/json
         id: pair_8f7dd6f0ca504829a42a1ae5f23c98cd
-    authentication: {}
+      - id: pair_8b4b78f037ae4792b07ca7378c7c2159
+        name: Accept
+        value: application/json
+        description: ""
+    authentication:
+      type: bearer
+      token: "{{ _.bearerToken }}"
     metaSortKey: -1660644064875
     isPrivate: false
     settingStoreCookies: true
@@ -86,7 +165,7 @@ resources:
     _type: request
   - _id: req_1c406a63560440d68fa58b4ed846a13f
     parentId: fld_8e04b275b31e475b951d287a1ce6b9fe
-    modified: 1660646982822
+    modified: 1661179475114
     created: 1660645194113
     url: "{{ _.url.base }}/hotels/clark-marriott-hotel/show"
     name: Read
@@ -94,8 +173,14 @@ resources:
     method: GET
     body: {}
     parameters: []
-    headers: []
-    authentication: {}
+    headers:
+      - id: pair_af6931ab9bdf4e2685991a21122ba927
+        name: Accept
+        value: application/json
+        description: ""
+    authentication:
+      type: bearer
+      token: "{{ _.bearerToken }}"
     metaSortKey: -1660644064825
     isPrivate: false
     settingStoreCookies: true
@@ -107,7 +192,7 @@ resources:
     _type: request
   - _id: req_34909da175554aff9dbd6104b730ca1d
     parentId: fld_8e04b275b31e475b951d287a1ce6b9fe
-    modified: 1660655161864
+    modified: 1661179447596
     created: 1660646945747
     url: "{{ _.url.base }}/hotels/clark-marriott-hotel/update"
     name: Update
@@ -125,7 +210,13 @@ resources:
       - name: Content-Type
         value: application/json
         id: pair_bc57eb753a044d3fb60912d9583318dd
-    authentication: {}
+      - id: pair_4d298fda9e1a4da79f64252bb745055b
+        name: Accept
+        value: application/json
+        description: ""
+    authentication:
+      type: bearer
+      token: "{{ _.bearerToken }}"
     metaSortKey: -1660644064800
     isPrivate: false
     settingStoreCookies: true
@@ -137,7 +228,7 @@ resources:
     _type: request
   - _id: req_bce61998cc7840c7bda24ad2c4005c69
     parentId: fld_8e04b275b31e475b951d287a1ce6b9fe
-    modified: 1660655204575
+    modified: 1661183205937
     created: 1660646452661
     url: "{{ _.url.base }}/hotels/clark-marriott-hotel/destroy"
     name: Delete
@@ -145,8 +236,14 @@ resources:
     method: DELETE
     body: {}
     parameters: []
-    headers: []
-    authentication: {}
+    headers:
+      - id: pair_66c50eb2ba314b74868edbf18e142429
+        name: Accept
+        value: application/json
+        description: ""
+    authentication:
+      type: bearer
+      token: "{{ _.bearerToken }}"
     metaSortKey: -1660644064775
     isPrivate: false
     settingStoreCookies: true
@@ -158,14 +255,14 @@ resources:
     _type: request
   - _id: env_ec931ac3a0c9b12aaf91be2a87d9c7001d691fe1
     parentId: wrk_a8ac6388bb714a3ebb3fade6dd94ca33
-    modified: 1660644277132
+    modified: 1661179469088
     created: 1660644008765
     name: Base Environment
     data:
       url:
         base: http://127.0.0.1:8000/api
-      bearerToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzbHVnIjoiZXhhbXBsZSIsImlhdCI6MTY1NjA1MjgwNywiZXhwIjoxNjU2MDU2NDA3fQ.4Jszc3e9DAHOp8l0QfnhQZeHPLsQiZpJTh5MPDDu9IQ
-      refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzbHVnIjoiZXhhbXBsZSIsImlhdCI6MTY1NjAwMTc5NCwiZXhwIjoxNjU2MjYwOTk0fQ.Jtt6ryYfpaVy6yIt7p12kso4Osv675HfIkFcQxe6Gu4
+      bearerToken: 6|iT9kLgvQB5io3WvM3fk7WFkRaG3r64NoeK58bXSK
+      refreshToken: 6|iT9kLgvQB5io3WvM3fk7WFkRaG3r64NoeK58bXSK
     dataPropertyOrder:
       "&":
         - url
