@@ -66,6 +66,10 @@ export default {
 				url     : 'http://localhost:8000', 
 				endpoints: 
 				{
+					csrf: 
+					{
+                        url: '/sanctum/csrf-cookie'
+                    },
 					login : 
 					{
 						url    : '/api/auth/login', 
@@ -93,7 +97,7 @@ export default {
 	axios:
 	{
 		// Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-		baseURL    : 'http://127.0.0.1:8000/api',
+		baseURL    : 'http://localhost:8000/api',
 		credentials: true,
 	},
 

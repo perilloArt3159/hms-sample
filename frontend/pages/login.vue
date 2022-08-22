@@ -68,7 +68,7 @@
                     type="submit"
                     class="btn btn-blue p-2 w-full"
                 >
-                    Login Page
+                    Submit
                 </button>
             </div>
         </form>
@@ -155,7 +155,7 @@ export default
                                     }, 
                                     settings : 
                                     {
-                                        timeout : 5000
+                                        timeout : 3000
                                     } 
                                 }
                             );

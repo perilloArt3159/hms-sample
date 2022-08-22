@@ -627,14 +627,6 @@ export default
             this.formCreate.state.name    = null;
             this.formCreate.state.address = null;
         },
-        handleModalCreateOk(bvModalEvent)
-        {
-            // Prevent modal from closing
-            bvModalEvent.preventDefault()
-
-            // Trigger submit handler
-            this.handleModalCreateSubmit()
-        },
         handleModalCreateSubmit: debounce(
             async function (e) 
             {
@@ -662,6 +654,8 @@ export default
 
                 this.onPageChange(); 
 
+                this.resetModalCreate(); 
+
                 this.modalCreateActive = false; 
             },
             250
@@ -682,11 +676,6 @@ export default
 
             this.formUpdate.state.name = null;
             this.formUpdate.state.address = null;
-        },
-        handleModalUpdateOk(bvModalEvent)
-        {
-            // Trigger submit handler
-            this.handleModalUpdateSubmit()
         },
         handleModalUpdateSubmit: debounce(
             async function (e) 
@@ -714,6 +703,8 @@ export default
                 );
 
                 this.onPageChange(); 
+
+                this.resetModalUpdate();
 
                 this.modalUpdateActive = false; 
             },
