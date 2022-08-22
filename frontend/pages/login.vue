@@ -10,6 +10,7 @@
         </div>
 
         <form 
+            ref="form"
             @submit.stop.prevent="submitLogin"
         >
             <div class="my-2">
@@ -138,15 +139,33 @@ export default
                         {
                             data :
                             {
-                                email    : this.form.email, 
-                                password : this.form.password
+                                email    : this.form.data.email, 
+                                password : this.form.data.password
                             }
                         }
                     )
-                    .then(() => this.$router.push('/'))
+                    .then(() => 
+                        {
+                            this.showToast(
+                                {
+                                    content : 
+                                    {
+                                        title   : "Success!",
+                                        message : "Login Successful!"
+                                    }, 
+                                    settings : 
+                                    {
+                                        timeout : 5000
+                                    } 
+                                }
+                            );
+                        }
+                    )
                     .catch(
                         error => 
                         {
+                            console.log(error);
+
                             if (error.response.status !== 422)  
                             {
                                 this.showToast(

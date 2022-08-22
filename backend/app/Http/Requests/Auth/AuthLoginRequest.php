@@ -15,7 +15,7 @@ class AuthLoginRequest extends ResponseRequest
      */
     public function authorize()
     {
-        return Auth::guest();
+        return true;
     }
 
     /**

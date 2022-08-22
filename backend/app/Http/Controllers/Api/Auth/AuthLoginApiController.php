@@ -18,9 +18,9 @@ class AuthLoginApiController extends Controller
      * 
      * @param AuthLoginRequest $request 
      * 
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse | void
      */
-    public function __invoke(AuthLoginRequest $request) : \Illuminate\Http\JsonResponse
+    public function __invoke(AuthLoginRequest $request) 
     {
         /**
          * For Front-End Frameworks e.g. Nuxt & Redux
@@ -41,7 +41,7 @@ class AuthLoginApiController extends Controller
             return response()->json(
                 data : 
                 [
-                    'message' => 'LIST OF HOTELS',
+                    'message' => 'LOGIN SUCCESSFULL',
                     'data'    => 
                     [
                         "token" => $token->plainTextToken,

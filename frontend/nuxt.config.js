@@ -70,17 +70,31 @@ export default {
 					{
 						url    : '/api/auth/login', 
 						method : 'POST' 
-					}
-				}
+					},
+					logout: 
+					{
+                        url: '/api/auth/logout'
+                    },
+				}, 
 			},
-		}
+		},
+
+        redirect: 
+		{
+            login : '/login',
+            logout: '/login',
+            home  : '/'
+        },
+
+		plugins: ['~/plugins/axios'],
 	},
 
 	// Axios module configuration: https://go.nuxtjs.dev/config-axios
 	axios:
 	{
 		// Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-		baseURL: 'http://127.0.0.1:8000/api',
+		baseURL    : 'http://127.0.0.1:8000/api',
+		credentials: true,
 	},
 
 	// Build Configuration: https://go.nuxtjs.dev/config-build

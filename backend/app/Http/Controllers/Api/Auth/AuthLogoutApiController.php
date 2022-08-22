@@ -14,9 +14,9 @@ class AuthLogoutApiController extends Controller
     /**
      * Unauthenticate User 
      * 
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse | void
      */
-    public function __invoke(Request $request) : \Illuminate\Http\JsonResponse
+    public function __invoke(Request $request)
     {
         if (EnsureFrontendRequestsAreStateful::fromFrontend(request())) 
         {

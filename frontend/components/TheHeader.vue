@@ -51,12 +51,13 @@
                     </li>
                     <li 
                         class="flex items-center font-bold  cursor-pointer border-l pl-3"
+                        @click="logout"
                     >
-                        <i class="bi bi-person-circle text-2xl">
+                        <i class="bi bi-power text-2xl">
 
                         </i>
                         <span class="ml-2" style="width:150px">
-                            Guest
+                            Logout
                         </span>
                     </li>
                 </ul>
@@ -85,6 +86,9 @@
 
 <script>
 
+import { debounce } from 'lodash'; 
+import { mapActions } from 'vuex'; 
+
 export default
 {
     name: 'NuxtAppHeader',
@@ -95,10 +99,59 @@ export default
     ), 
     methods : 
     {
+        ...mapActions(
+            'toast', 
+            [
+                'showToast'
+            ]
+        ),
+
         toggleDarkMode()  
         {
             this.isDarkModeActive = !this.isDarkModeActive;
-        }
+        }, 
+        logout : debounce (
+            function () 
+            {
+                this.$auth.logout()
+                    .then(() => 
+                        {
+                            this.showToast(
+                                {
+                                    content : 
+                                    {
+                                        title   : "Success!",
+                                        message : "Logout Successful!"
+                                    }, 
+                                    settings : 
+                                    {
+                                        timeout : 5000
+                                    } 
+                                }
+                            );
+                        }
+                    )
+                    .catch(
+                        error => 
+                        {
+                            this.showToast(
+                                {
+                                    content : 
+                                    {
+                                        title   : "Error!",
+                                        message : "Something Went Wrong!"
+                                    }, 
+                                    settings : 
+                                    {
+                                        timeout : 5000
+                                    } 
+                                }
+                            );
+                        }
+                    )
+            }, 
+            250
+        )
     }
 }
 
