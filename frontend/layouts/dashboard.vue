@@ -1,5 +1,6 @@
 <template>
     <div id="content">
+        <app-toast/>
         <the-sidebar/>
         <div 
             id="main"

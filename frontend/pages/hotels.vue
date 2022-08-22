@@ -536,6 +536,12 @@ export default
                 'deleteHotel'
             ]
         ),
+        ...mapActions(
+            'toast', 
+            [
+                'showToast'
+            ]
+        ),
         onPageChange: debounce(
             async function () 
             {
@@ -566,6 +572,21 @@ export default
             async function (slug) 
             {
                 await this.deleteHotel(slug);
+
+                this.showToast(
+                    {
+                        content : 
+                        {
+                            title   : "Success!",
+                            message : "Record Deleted!"
+                        }, 
+                        settings : 
+                        {
+                            timeout : 5000
+                        } 
+                    }
+                );
+
                 this.onPageChange();
             },
             250 
@@ -624,6 +645,20 @@ export default
 
                 await this.createHotel(this.formCreate.data); 
 
+                this.showToast(
+                    {
+                        content : 
+                        {
+                            title   : "Success!",
+                            message : "Record Created!"
+                        }, 
+                        settings : 
+                        {
+                            timeout : 5000
+                        } 
+                    }
+                );
+
                 this.onPageChange(); 
 
                 this.modalCreateActive = false; 
@@ -663,6 +698,20 @@ export default
 
                 await this.updateHotel({requestData : this.formUpdate.data, slug : this.selectedSlug });
                 
+                this.showToast(
+                    {
+                        content : 
+                        {
+                            title   : "Success!",
+                            message : "Record Updated!"
+                        }, 
+                        settings : 
+                        {
+                            timeout : 5000
+                        } 
+                    }
+                );
+
                 this.onPageChange(); 
 
                 this.modalUpdateActive = false; 
