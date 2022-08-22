@@ -29,7 +29,7 @@ No Description.
 |:----|:-----|:------------------|
 | [Laravel](https://laravel.com/docs/9.x)     |`9.24.0`        |PHP Back-End Framework           |
 | [MySQL](https://www.mysql.com/)             |`8.0.0`         |Relational Database Management System        |
-| [BootstrapVue](https://www.mysql.com/)      |`2.21.2`        |Bootstrap UI Library for Vue.js       |
+| [TailwindCSS](https://tailwindcss.com/)     |`3.1.0`         | Utility-First CSS Library |
 | [Nuxt.js](https://nuxtjs.org/)              |`2.15.8`        |Vue.js Open-Source Framework   |
 
 ### Composer Packages
