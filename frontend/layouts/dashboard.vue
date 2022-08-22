@@ -49,13 +49,11 @@
 }
 </style>
 
-<script lang="ts">
+<script>
 
-import Vue from 'vue'
+export default
+{
+    //...
+}
 
-export default Vue.extend(
-	{
-        //...
-	}
-)
 </script>

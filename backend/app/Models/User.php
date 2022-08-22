@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -17,7 +19,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
+    protected $fillable = 
+    [
         'name',
         'email',
         'password',
@@ -28,7 +31,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $hidden = [
+    protected $hidden = 
+    [
         'password',
         'remember_token',
     ];
@@ -41,4 +45,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Interact with the user's password.
+     *
+     * @param  string  $value
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function password(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => $value,
+            set: fn ($value) => bcrypt($value),
+        );
+    }
 }

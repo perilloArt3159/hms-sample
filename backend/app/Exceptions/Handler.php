@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException; 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -48,29 +49,45 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (NotFoundHttpException $e, $request)
-        {
-            if ($request->is('api/*'))
             {
-                return response()->json([
-                    'message' => 'Record not found.',
-                    'data'    => null, 
-                ], 404);
+                if ($request->is('api/*'))
+                {
+                    return response()->json([
+                        'message' => 'Record not found.',
+                        'data'    => null, 
+                    ], 404);
+                }
             }
-        });
+        );
 
         $this->renderable(function (ModelNotFoundException $e, $request)
+            {
+                if ($request->is('api/*'))
+                {
+                    return response()->json([
+                        'message' => 'Record not found.',
+                        'data'    => null, 
+                    ], 404);
+                }
+            }
+        );
+
+        $this->renderable(function (AuthenticationException $e, $request)
         {
             if ($request->is('api/*'))
             {
                 return response()->json([
-                    'message' => 'Record not found.',
+                    'message' => 'Credentials Invalid',
                     'data'    => null, 
                 ], 404);
             }
-        });
+        }
+    );
 
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        $this->reportable(function (Throwable $e) 
+            {
+                //
+            }
+        );
     }
 }
