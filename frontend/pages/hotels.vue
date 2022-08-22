@@ -207,12 +207,16 @@
                                 {{ item.createdAt }}
                             </td>
                             <td class="grid grid-cols-2 gap-2 p-2">
-                                <button class="btn btn-blue"
+                                <button 
+                                    class="btn btn-blue"
                                     @click="setupFormUpdate(item)"
                                 >
                                     <i class="bi bi-pen-fill text-xl"></i>
                                 </button>
-                                <button class="btn btn-red">
+                                <button 
+                                    class="btn btn-red"
+                                    @click="deleteItem(item.slug)"    
+                                >
                                     <i class="bi bi-trash-fill text-xl"></i>
                                 </button>
                             </td>
@@ -221,30 +225,149 @@
                 </table>
             </div>
 
+            <!-- MODAL CREATE -->
             <app-modal
                 v-show="modalCreateActive"
-                @close-modal="modalCreateActive=false"
+                @close-modal="closeModalCreate"
+                @submit-modal="handleModalCreateSubmit"
             >
                 <template #header>
                     Add Hotel 
                 </template>
                 <template #default>
+                    <form 
+                        ref="formCreate" 
+                        @submit.stop.prevent="handleModalCreateSubmit"
+                    >
+                        <div class="flex flex-col my-3">
+                            <label 
+                                for="inputName"
+                                class="capitalize font-bold tracking-wider text-gray-400"
+                            >
+                                Name 
+                            </label>
+                            <div class="mt-3">
+                                <input 
+                                    v-model="formCreate.data.name"
+                                    id="inputName"
+                                    type="text"
+                                    class="form-control form-control-input w-full"
+                                    placeholder="Enter Name"
+                                    required
+                                >
+                                <small 
+                                    class="text-red-400 my-2"
+                                    v-if="formCreate.state.name == false"
+                                >
+                                    This field is required.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="flex flex-col my-3">
+                            <label 
+                                for="textAreaAddress"
+                                class="capitalize font-bold tracking-wider text-gray-400"
+                            >
+                                Address
+                            </label>
+                            <div class="mt-3">
+                                <textarea
+                                    v-model="formCreate.data.address"
+                                    id="textAreaAddress"
+                                    type="text"
+                                    class="form-control form-control-input my-0 w-full"
+                                    placeholder="Enter Address"
+                                    rows="5"
+                                    required
+                                >
+                                </textarea>
+                                <small 
+                                    class="text-red-400 my-2"
+                                    v-if="formCreate.state.address == false"
+                                >
+                                    This field is required.
+                                </small>
+                            </div>
+                        </div>
+                    </form>
+                </template>
+                <template #footer>
 
                 </template>
             </app-modal>
+            <!-- END MODAL CREATE -->
 
-
+            <!-- MODAL UPDATE-->
             <app-modal
                 v-show="modalUpdateActive"
-                @close-modal="modalUpdateActive=false"
+                @close-modal="closeModalUpdate"
+                @submit-modal="handleModalUpdateSubmit"
             >
                 <template #header>
-                    Update Hotel
+                    Update Hotel 
                 </template>
                 <template #default>
-                    {{ formUpdate.data }}
+                    <form 
+                        ref="formUpdate" 
+                        @submit.stop.prevent="handleModalUpdateSubmit"
+                    >
+                        <div class="flex flex-col my-3">
+                            <label 
+                                for="inputName"
+                                class="capitalize font-bold tracking-wider text-gray-400"
+                            >
+                                Name 
+                            </label>
+                            <div class="mt-3">
+                                <input 
+                                    v-model="formUpdate.data.name"
+                                    id="inputName"
+                                    type="text"
+                                    class="form-control form-control-input w-full"
+                                    placeholder="Enter Name"
+                                    required
+                                >
+                                <small 
+                                    class="text-red-400 my-2"
+                                    v-if="formUpdate.state.name == false"
+                                >
+                                    This field is required.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="flex flex-col my-3">
+                            <label 
+                                for="textAreaAddress"
+                                class="capitalize font-bold tracking-wider text-gray-400"
+                            >
+                                Address
+                            </label>
+                            <div class="mt-3">
+                                <textarea
+                                    v-model="formUpdate.data.address"
+                                    id="textAreaAddress"
+                                    type="text"
+                                    class="form-control form-control-input my-0 w-full"
+                                    placeholder="Enter Address"
+                                    rows="5"
+                                    required
+                                >
+                                </textarea>
+                                <small 
+                                    class="text-red-400 my-2"
+                                    v-if="formUpdate.state.address == false"
+                                >
+                                    This field is required.
+                                </small>
+                            </div>
+                        </div>
+                    </form>
+                </template>
+                <template #footer>
+
                 </template>
             </app-modal>
+            <!-- END MODAL UPDATE-->
 		</div>
     </div>
 </template>
@@ -270,16 +393,6 @@ export default
     {
         ...mapState( 'hotels', ['items']),   
 
-        sortOptions() 
-        {
-            // Create an options list from our fields
-            return this.fields
-                .filter(f => f.sortable)
-                .map(f => 
-                {
-                    return { text: f.label, value: f.column }
-                })
-        },
         totalPages() 
         {
             return Math.ceil(this.paginationInfo.totalItems / this.paginationInfo.perPage);
@@ -454,25 +567,9 @@ export default
             {
                 await this.deleteHotel(slug);
                 this.onPageChange();
-
-                this.$bvToast.toast(
-                    `Record Deleted`,
-                    {
-                        title        : 'Success',
-                        autoHideDelay: 5000,
-                        appendToast  : true,
-                        variant      : 'primary'
-                    }
-                );
             },
             250 
         ),
-        onFiltered(filteredItems) 
-        {
-            // Trigger pagination to update the number of buttons/pages due to filtering
-            this.totalRows = filteredItems.length
-            this.currentPage = 1
-        },
         checkFormCreateValidity()
         {
             const valid = this.$refs.formCreate.checkValidity();
@@ -482,6 +579,24 @@ export default
 
             return valid;
         },
+        closeModalCreate : debounce(
+            function () 
+            {
+                this.resetModalCreate(); 
+
+                this.modalCreateActive = false; 
+            }, 
+            250
+        ), 
+        closeModalUpdate : debounce(
+            function () 
+            {
+                this.resetModalUpdate();
+
+                this.modalUpdateActive = false; 
+            }, 
+            250
+        ), 
         resetModalCreate()
         {
             this.formCreate.data.name    = null;
@@ -511,22 +626,7 @@ export default
 
                 this.onPageChange(); 
 
-                this.$bvToast.toast(
-                    `Record Created`,
-                    {
-                        title        : 'Success',
-                        autoHideDelay: 1000,
-                        appendToast  : true,
-                        variant      : 'primary'
-                    }
-                );
-
-                //! Hide the modal manually
-                this.$nextTick(() =>
-                    {
-                        this.$bvModal.hide('modal-create')
-                    }
-                ); 
+                this.modalCreateActive = false; 
             },
             250
         ), 
@@ -549,9 +649,6 @@ export default
         },
         handleModalUpdateOk(bvModalEvent)
         {
-            // Prevent modal from closing
-            bvModalEvent.preventDefault()
-
             // Trigger submit handler
             this.handleModalUpdateSubmit()
         },
@@ -565,24 +662,10 @@ export default
                 }
 
                 await this.updateHotel({requestData : this.formUpdate.data, slug : this.selectedSlug });
+                
                 this.onPageChange(); 
 
-                this.$bvToast.toast(
-                    `Record Updated`,
-                    {
-                        title        : 'Success',
-                        autoHideDelay: 2000,
-                        appendToast  : true,
-                        variant      : 'primary'
-                    }
-                );
-
-                //! Hide the modal manually
-                this.$nextTick(() =>
-                {
-                    this.$bvModal.hide('modal-update')
-                }
-                );
+                this.modalUpdateActive = false; 
             },
             250
         ), 

@@ -21,6 +21,24 @@
             <div class="modal-content">
                 <slot />
             </div>
+            <div class="modal-footer">
+                <div class="flex align-items justify-end">
+                    <slot name="footer">
+                        <button 
+                            class="btn btn-blue p-2 mr-2"
+                            @click="$emit('close-modal')"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            class="btn btn-blue p-2"
+                            @click="$emit('submit-modal')"
+                        >
+                            Submit
+                        </button>
+                    </slot>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -46,7 +64,8 @@
         border-radius    : 4px;
 
         .modal-header, 
-        .modal-content
+        .modal-content, 
+        .modal-footer
         {
             padding          : 0.8rem 1.2rem;
         }
@@ -62,8 +81,12 @@
 
         .modal-content 
         {
-            min-height       : 250px;
             color            : grey;
+        }
+
+        .modal-footer
+        {
+            border-top       : 1px dotted grey;
         }
     }
 } 
