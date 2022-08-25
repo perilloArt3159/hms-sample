@@ -1,12 +1,8 @@
 <template>
     <div>
-        <h2 
-			class="font-bold text-gray-400 text-3xl my-3 tracking-wider capitalize"
-		>
+        <portal to="title">
 			hotels
-		</h2>
-
-		<hr/>
+		</portal>
 
 		<div 
             v-if="items"

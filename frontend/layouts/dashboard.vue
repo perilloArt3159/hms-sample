@@ -7,7 +7,21 @@
         >
             <the-header/>
             <main>
-                <Nuxt />
+                <h2 
+                    class="font-bold text-blue-400 text-3xl my-3 tracking-wider capitalize"
+                >
+                    <portal-target name="title">
+
+                    </portal-target>
+                </h2>
+
+                <hr class="hr" />
+
+                <div 
+                    class="my-5"
+                >
+                    <Nuxt />
+                </div>
             </main>
             <the-footer/>
         </div>

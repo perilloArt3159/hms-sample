@@ -53,7 +53,8 @@ export default {
 	[
 		// https://go.nuxtjs.dev/axios
 		'@nuxtjs/axios',
-		'@nuxtjs/auth-next'
+		'@nuxtjs/auth-next', 
+		'portal-vue/nuxt'
 	],
 
 	auth: 

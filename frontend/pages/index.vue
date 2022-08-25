@@ -1,18 +1,10 @@
 <template>
 	<div>
-		<h2 
-			class="font-bold text-gray-400 text-3xl my-3 tracking-wider capitalize"
-		>
+		<portal to="title">
 			home
-		</h2>
+		</portal>
 
-		<hr class="hr" />
-
-		<div 
-			class="my-5 text-gray-400 italic"
-		>
-			To be Added
-		</div>
+		To be Added
 	</div>
 </template>
 
